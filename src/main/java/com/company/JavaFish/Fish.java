@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-abstract class Fish extends Node {
+abstract class Fish {
     public Fish(int _x, int _y, String path) throws FileNotFoundException {
         Image image = new Image(new FileInputStream(path));
         imageView = new ImageView(image);
@@ -16,7 +16,6 @@ abstract class Fish extends Node {
         imageView.setFitHeight(300);
         imageView.setFitWidth(200);
         imageView.setPreserveRatio(true);
-        setFocused(false);
     }
 
     public ImageView getImageView() {

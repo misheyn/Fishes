@@ -3,13 +3,11 @@ package com.company.JavaFish;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -21,9 +19,10 @@ public class Habitat extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
         root = new Scene(fxmlLoader.load(), 900, 750);
-        group = fxmlLoader.getRoot();
+        Pane group = fxmlLoader.getRoot();
+        controller = fxmlLoader.getController();
         Image img = new Image(new FileInputStream("src/image/aquarium.png"));
         BackgroundImage bImg = new BackgroundImage(img,
                 BackgroundRepeat.NO_REPEAT,
@@ -32,6 +31,8 @@ public class Habitat extends Application {
                 BackgroundSize.DEFAULT);
         Background bGround = new Background(bImg);
         group.setBackground(bGround);
+        timeFlag = false;
+        statFlag = false;
         N1 = 5;
         N2 = 2;
         P1 = 40;
@@ -39,59 +40,61 @@ public class Habitat extends Application {
         timer = new Timer();
         listGuppy = new ArrayList<>();
         listGolden = new ArrayList<>();
-        startTime = 0;
+        startTime = System.currentTimeMillis();
+        keyEventsHandler();
         stage.setTitle("Aquarium fish");
         stage.setScene(root);
+        stage.getIcons().add(new Image(new FileInputStream("src/image/fill.png")));
+        stage.show();
+    }
+
+    private void keyEventsHandler() {
         root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode().equals(KeyCode.T)) {
-                flag = !flag;
+                timeFlag = !timeFlag;
             }
         });
         root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode().equals(KeyCode.B)) {
+                statFlag = false;
                 startTime = System.currentTimeMillis();
                 startCycle();
             }
         });
         root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode().equals(KeyCode.E)) {
+                statFlag = !statFlag;
+                update(System.currentTimeMillis() - startTime);
                 timer.cancel();
-                String str;
-                long finalTime = System.currentTimeMillis() - startTime;
-                str = "Golden fish: " + Integer.toString(listGolden.size());
-                str += "\nGuppy fish: " + Integer.toString(listGuppy.size());
-                str += "\nTime: " + Long.toString(finalTime / 1000);
-                ((Controller) fxmlLoader.getController()).printStatistic(str);
                 timer = new Timer();
-                listGuppy.clear();
-                listGolden.clear();
-                startTime = 0;
+                clearListGolden();
+                clearListGuppy();
+                startTime = System.currentTimeMillis();
             }
         });
-        stage.getIcons().add(new Image(new FileInputStream("src/image/fill.png")));
-        stage.show();
-    }
 
+    }
 
     private void startCycle() {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> {
-
-                    update(System.currentTimeMillis() - startTime);
-                });
+                Platform.runLater(() -> update(System.currentTimeMillis() - startTime));
 
             }
         }, 0, 1000);
     }
 
-//    private void clear() {
-//        list.forEach((tmp) -> {
-//            group.getChildren().remove(tmp.getImageView());
-//        });
-//        list.clear();
-//    }
+    private void clearListGolden() {
+
+        listGolden.forEach((tmp) -> controller.getPane().getChildren().remove(tmp.getImageView()));
+        listGolden.clear();
+    }
+
+    private void clearListGuppy() {
+        listGuppy.forEach((tmp) -> controller.getPane().getChildren().remove(tmp.getImageView()));
+        listGuppy.clear();
+    }
 
     private void update(long currentTime) {
         Random random = new Random();
@@ -117,29 +120,43 @@ public class Habitat extends Application {
                 }
             }
         }
-        String str = "";
-        if (flag) {
+        showLabels();
+    }
+
+    private void showLabels() {
+        String timeStr = "", statStr;
+
+        if (timeFlag) {
             if (startTime != 0) {
                 long time = System.currentTimeMillis() - startTime;
-                str = "Time: " + Long.toString(time / 1000);
+                timeStr = "Time: " + time / 1000;
             } else {
-                str = "0";
+                timeStr = "0";
             }
         }
-        ((Controller) fxmlLoader.getController()).printLabel(str);
+        if (statFlag) {
+            long finalTime = System.currentTimeMillis() - startTime;
+            statStr = "Golden fish: " + listGolden.size();
+            statStr += "\nGuppy fish: " + listGuppy.size();
+            statStr += "\nTime: " + finalTime / 1000;
+        } else {
+            statStr = "";
+        }
+        controller.printStatistic(statStr);
+        controller.printLabel(timeStr);
     }
 
     private void bornGold() throws FileNotFoundException {
         Random random = new Random();
-        GoldenFish fish = new GoldenFish(random.nextInt((int) root.getWidth() - 200), random.nextInt((int) root.getHeight()) - 300);
-        group.getChildren().add(fish.getImageView());
+        GoldenFish fish = new GoldenFish(random.nextInt((int) root.getWidth() - 100) + 50, random.nextInt((int) root.getHeight() - 200) + 100);
+        controller.getPane().getChildren().add(fish.getImageView());
         listGolden.add(fish);
     }
 
     private void bornGuppy() throws FileNotFoundException {
         Random random = new Random();
-        GuppyFish fish = new GuppyFish(random.nextInt((int) root.getWidth() - 200), random.nextInt((int) root.getHeight()) - 300);
-        group.getChildren().add(fish.getImageView());
+        GuppyFish fish = new GuppyFish(random.nextInt((int) root.getWidth() - 100) + 50, random.nextInt((int) root.getHeight() - 200) + 100);
+        controller.getPane().getChildren().add(fish.getImageView());
         listGuppy.add(fish);
     }
 
@@ -149,13 +166,13 @@ public class Habitat extends Application {
     }
 
     private Scene root;
-    private boolean flag;
-    private FXMLLoader fxmlLoader;
+    private boolean timeFlag;
+    private boolean statFlag;
+    private Controller controller;
     private static Timer timer;
     private long startTime;
     private ArrayList<GuppyFish> listGuppy;
     private ArrayList<GoldenFish> listGolden;
-    private Pane group;
     private int P1, P2;
     private int N1, N2;
 }

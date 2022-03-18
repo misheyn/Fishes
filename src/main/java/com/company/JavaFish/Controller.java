@@ -5,9 +5,11 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 public class Controller {
 
@@ -42,6 +44,15 @@ public class Controller {
     }
 
     @FXML
+    private Pane modelPane;
+    @FXML
+    private ImageView image;
+
+    public Pane getPane() {
+        return modelPane;
+    }
+
+    @FXML
     void mouseClick(MouseEvent event) {
 
     }
@@ -49,15 +60,13 @@ public class Controller {
     public void printLabel(String str) {
         label.setText(str);
     }
+
     public void printStatistic(String str) {
         statistic.setText(str);
     }
 
     @FXML
     void initialize() {
-        assert label != null : "fx:id=\"label\" was not injected: check your FXML file 'hello-view.fxml'.";
-        assert statistic != null : "fx:id=\"statistic\" was not injected: check your FXML file 'hello-view.fxml'.";
-//        assert text != null : "fx:id=\"statistic\" was not injected: check your FXML file 'hello-view.fxml'.";
     }
 
 }

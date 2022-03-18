@@ -38,11 +38,11 @@ public class Habitat extends Application {
         P1 = 40;
         P2 = 60;
         timer = new Timer();
-        listGuppy = new ArrayList<>();
-        listGolden = new ArrayList<>();
+        listFish = new ArrayList<>();
         startTime = System.currentTimeMillis();
         keyEventsHandler();
-        stage.setTitle("Aquarium fish");
+        controller.getStatistic().setVisible(true);
+        stage.setTitle("Aquarium fishes");
         stage.setScene(root);
         stage.getIcons().add(new Image(new FileInputStream("src/image/fill.png")));
         stage.show();
@@ -57,6 +57,7 @@ public class Habitat extends Application {
         root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode().equals(KeyCode.B)) {
                 statFlag = false;
+                controller.getStatistic().setVisible(false);
                 startTime = System.currentTimeMillis();
                 startCycle();
             }
@@ -64,15 +65,14 @@ public class Habitat extends Application {
         root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode().equals(KeyCode.E)) {
                 statFlag = !statFlag;
+                controller.getStatistic().setVisible(true);
                 update(System.currentTimeMillis() - startTime);
                 timer.cancel();
                 timer = new Timer();
-                clearListGolden();
-                clearListGuppy();
+                clearListFish();
                 startTime = System.currentTimeMillis();
             }
         });
-
     }
 
     private void startCycle() {
@@ -85,15 +85,10 @@ public class Habitat extends Application {
         }, 0, 1000);
     }
 
-    private void clearListGolden() {
+    private void clearListFish() {
 
-        listGolden.forEach((tmp) -> controller.getPane().getChildren().remove(tmp.getImageView()));
-        listGolden.clear();
-    }
-
-    private void clearListGuppy() {
-        listGuppy.forEach((tmp) -> controller.getPane().getChildren().remove(tmp.getImageView()));
-        listGuppy.clear();
+        listFish.forEach((tmp) -> controller.getPane().getChildren().remove(tmp.getImageView()));
+        listFish.clear();
     }
 
     private void update(long currentTime) {
@@ -136,8 +131,10 @@ public class Habitat extends Application {
         }
         if (statFlag) {
             long finalTime = System.currentTimeMillis() - startTime;
-            statStr = "Golden fish: " + listGolden.size();
-            statStr += "\nGuppy fish: " + listGuppy.size();
+            long countGold = listFish.stream().filter(i -> i instanceof GoldenFish).count();
+            long countGuppy = listFish.stream().filter(i -> i instanceof GuppyFish).count();
+            statStr = "Golden fish: " + countGold;
+            statStr += "\nGuppy fish: " + countGuppy;
             statStr += "\nTime: " + finalTime / 1000;
         } else {
             statStr = "";
@@ -148,16 +145,16 @@ public class Habitat extends Application {
 
     private void bornGold() throws FileNotFoundException {
         Random random = new Random();
-        GoldenFish fish = new GoldenFish(random.nextInt((int) root.getWidth() - 100) + 50, random.nextInt((int) root.getHeight() - 200) + 100);
+        GoldenFish fish = new GoldenFish(random.nextInt((int) root.getWidth() - 200), random.nextInt((int) root.getHeight() - 100));
         controller.getPane().getChildren().add(fish.getImageView());
-        listGolden.add(fish);
+        listFish.add(fish);
     }
 
     private void bornGuppy() throws FileNotFoundException {
         Random random = new Random();
-        GuppyFish fish = new GuppyFish(random.nextInt((int) root.getWidth() - 100) + 50, random.nextInt((int) root.getHeight() - 200) + 100);
+        GuppyFish fish = new GuppyFish(random.nextInt((int) root.getWidth() - 200), random.nextInt((int) root.getHeight() - 100));
         controller.getPane().getChildren().add(fish.getImageView());
-        listGuppy.add(fish);
+        listFish.add(fish);
     }
 
     public static void main(String[] args) {
@@ -166,13 +163,12 @@ public class Habitat extends Application {
     }
 
     private Scene root;
-    private boolean timeFlag;
-    private boolean statFlag;
     private Controller controller;
     private static Timer timer;
+    private boolean timeFlag;
+    private boolean statFlag;
     private long startTime;
-    private ArrayList<GuppyFish> listGuppy;
-    private ArrayList<GoldenFish> listGolden;
+    private ArrayList<Fish> listFish;
     private int P1, P2;
     private int N1, N2;
 }

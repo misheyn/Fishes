@@ -5,11 +5,10 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 public class Controller {
 
@@ -23,10 +22,13 @@ public class Controller {
     private Label label;
 
     @FXML
+    private Label statistic;
+
+    @FXML
     private AnchorPane pane;
 
     @FXML
-    private Label statistic;
+    private Pane modelPane;
 
     @FXML
     void keyPressed(KeyEvent event) {
@@ -43,30 +45,27 @@ public class Controller {
 
     }
 
-    @FXML
-    private Pane modelPane;
-    @FXML
-    private ImageView image;
-
     public Pane getPane() {
         return modelPane;
-    }
-
-    @FXML
-    void mouseClick(MouseEvent event) {
-
     }
 
     public void printLabel(String str) {
         label.setText(str);
     }
 
+    public Label getStatistic() {
+        return statistic;
+    }
+
     public void printStatistic(String str) {
+//        statistic.setBackground(new Background(new BackgroundFill(Color.rgb(1, 0, 1, 0.7), new CornerRadii(5.0), new Insets(-5.0))));
         statistic.setText(str);
+//        statistic.setVisible(false);
     }
 
     @FXML
     void initialize() {
+
     }
 
 }

@@ -5,8 +5,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -19,10 +17,10 @@ public class Habitat extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
-        root = new Scene(fxmlLoader.load(), 900, 750);
-        Pane group = fxmlLoader.getRoot();
-        controller = fxmlLoader.getController();
+        instance = this;
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mainWindow.fxml"));
+        Scene root = new Scene(fxmlLoader.load(), 1100, 750);
+        mainController = fxmlLoader.getController();
         Image img = new Image(new FileInputStream("src/image/aquarium.png"));
         BackgroundImage bImg = new BackgroundImage(img,
                 BackgroundRepeat.NO_REPEAT,
@@ -30,96 +28,91 @@ public class Habitat extends Application {
                 BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         Background bGround = new Background(bImg);
-        group.setBackground(bGround);
-        timeFlag = false;
-        statFlag = false;
-        N1 = 5;
-        N2 = 2;
-        P1 = 40;
-        P2 = 60;
-        timer = new Timer();
-        listFish = new ArrayList<>();
-        startTime = System.currentTimeMillis();
-        keyEventsHandler();
-        controller.getStatistic().setVisible(true);
+        mainController.getPane().setBackground(bGround);
+        initialize();
+        mainController.getStatistic().setVisible(true);
         stage.setTitle("Aquarium fishes");
         stage.setScene(root);
         stage.getIcons().add(new Image(new FileInputStream("src/image/fill.png")));
         stage.show();
     }
 
-    private void keyEventsHandler() {
-        root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode().equals(KeyCode.T)) {
-                timeFlag = !timeFlag;
-            }
-        });
-        root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode().equals(KeyCode.B)) {
-                statFlag = false;
-                controller.getStatistic().setVisible(false);
-                startTime = System.currentTimeMillis();
-                startCycle();
-            }
-        });
-        root.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode().equals(KeyCode.E)) {
-                statFlag = !statFlag;
-                controller.getStatistic().setVisible(true);
-                update(System.currentTimeMillis() - startTime);
-                timer.cancel();
-                timer = new Timer();
-                clearListFish();
-                startTime = System.currentTimeMillis();
-            }
-        });
+    public void startAction() {
+        startFlag = true;
+        statFlag = false;
+        startTime = System.currentTimeMillis();
+        mainController.getStatistic().setVisible(false);
+        startCycle();
+    }
+
+    public void stopAction() throws IOException {
+        statFlag = true;
+        startFlag = false;
+        update(System.currentTimeMillis() - startTime);
+        showStatLabel();
+        if (!startFlag) {
+            timer.cancel();
+            timer = new Timer();
+            clearListFish();
+            startTime = System.currentTimeMillis();
+            mainController.switchButtonsOn();
+        }else{
+            mainController.switchButtonsOff();
+        }
     }
 
     private void startCycle() {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> update(System.currentTimeMillis() - startTime));
+                Platform.runLater(() -> {
+                    try {
+                        update(System.currentTimeMillis() - startTime);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
 
             }
         }, 0, 1000);
     }
 
     private void clearListFish() {
-
-        listFish.forEach((tmp) -> controller.getPane().getChildren().remove(tmp.getImageView()));
-        listFish.clear();
+        FishArr.getInstance().vector.forEach((tmp) -> mainController.getPane().getChildren().remove(tmp.getImageView()));
+        FishArr.getInstance().vector.clear();
     }
 
-    private void update(long currentTime) {
-        Random random = new Random();
-        int P;
-        if ((currentTime / 1000) % N1 == 0) {
-            P = random.nextInt(300);
-            if (P1 <= P) {
-                try {
-                    bornGold();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+    private void update(long currentTime) throws IOException {
+        if (startFlag) {
+            Random random = new Random();
+            int P;
+            if ((currentTime / 1000) % N1 == 0) {
+                P = random.nextInt(300);
+                if (P1 <= P) {
+                    try {
+                        bornGold();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-        }
 
-        if ((currentTime / 1000) % N2 == 0) {
-            P = random.nextInt(300);
-            if (P2 <= P) {
-                try {
-                    bornGuppy();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+            if ((currentTime / 1000) % N2 == 0) {
+                P = random.nextInt(300);
+                if (P2 <= P) {
+                    try {
+                        bornGuppy();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+            showTimeLabel();
         }
-        showLabels();
     }
 
-    private void showLabels() {
-        String timeStr = "", statStr;
+    private void showTimeLabel() {
+        String timeStr = "";
 
         if (timeFlag) {
             if (startTime != 0) {
@@ -129,32 +122,42 @@ public class Habitat extends Application {
                 timeStr = "0";
             }
         }
+        mainController.printLabel(timeStr);
+    }
+
+    private void showStatLabel() throws IOException {
         if (statFlag) {
             long finalTime = System.currentTimeMillis() - startTime;
-            long countGold = listFish.stream().filter(i -> i instanceof GoldenFish).count();
-            long countGuppy = listFish.stream().filter(i -> i instanceof GuppyFish).count();
+            long countGold = FishArr.getInstance().vector.stream().filter(i -> i instanceof GoldenFish).count();
+            long countGuppy = FishArr.getInstance().vector.stream().filter(i -> i instanceof GuppyFish).count();
             statStr = "Golden fish: " + countGold;
             statStr += "\nGuppy fish: " + countGuppy;
             statStr += "\nTime: " + finalTime / 1000;
+            if (!resultWindowFlag) {
+                mainController.getStatistic().setVisible(true);
+                mainController.printStatistic(statStr);
+            } else {
+                mainController.getStatistic().setVisible(false);
+                ResultWindow.showMenu();
+            }
         } else {
             statStr = "";
         }
-        controller.printStatistic(statStr);
-        controller.printLabel(timeStr);
+
     }
 
     private void bornGold() throws FileNotFoundException {
         Random random = new Random();
-        GoldenFish fish = new GoldenFish(random.nextInt((int) root.getWidth() - 200), random.nextInt((int) root.getHeight() - 100));
-        controller.getPane().getChildren().add(fish.getImageView());
-        listFish.add(fish);
+        GoldenFish fish = new GoldenFish(random.nextInt((int) mainController.getPane().getWidth() - 200), random.nextInt((int) mainController.getPane().getHeight() - 100));
+        mainController.getPane().getChildren().add(fish.getImageView());
+        FishArr.getInstance().vector.add(fish);
     }
 
     private void bornGuppy() throws FileNotFoundException {
         Random random = new Random();
-        GuppyFish fish = new GuppyFish(random.nextInt((int) root.getWidth() - 200), random.nextInt((int) root.getHeight() - 100));
-        controller.getPane().getChildren().add(fish.getImageView());
-        listFish.add(fish);
+        GuppyFish fish = new GuppyFish(random.nextInt((int) mainController.getPane().getWidth() - 200), random.nextInt((int) mainController.getPane().getHeight() - 100));
+        mainController.getPane().getChildren().add(fish.getImageView());
+        FishArr.getInstance().vector.add(fish);
     }
 
     public static void main(String[] args) {
@@ -162,13 +165,76 @@ public class Habitat extends Application {
         timer.cancel();
     }
 
-    private Scene root;
-    private Controller controller;
+    private void initialize() throws IOException {
+        timeFlag = false;
+        statFlag = false;
+        startFlag = false;
+        resultWindowFlag = true;
+        StartMenu.showMenu();
+        timer = new Timer();
+        startTime = System.currentTimeMillis();
+    }
+
+    public static void setN1(int n1) {
+        N1 = n1;
+    }
+
+    public static void setN2(int n2) {
+        N2 = n2;
+    }
+
+    public static void setP1(int p1) {
+        P1 = p1;
+    }
+
+    public static void setP2(int p2) {
+        P2 = p2;
+    }
+
+    public static void setResultWindowFlag() {
+        resultWindowFlag = !resultWindowFlag;
+    }
+
+    public static String getStatStr() {
+        return statStr;
+    }
+
+    public static void setStopFlag() {
+        startFlag = false;
+    }
+
+    public static void unsetStopFlag() {
+        startFlag = true;
+    }
+
+    public Habitat() {
+
+    }
+
+    public static Habitat getInstance() {
+        Habitat localInstance = instance;
+        if (localInstance == null) {
+            synchronized (Habitat.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new Habitat();
+                }
+            }
+        }
+        return localInstance;
+    }
+
+    private static volatile Habitat instance;
+    private MainController mainController;
+    private StartMenuController startMenuController;
     private static Timer timer;
-    private boolean timeFlag;
+    public boolean timeFlag;
     private boolean statFlag;
     private long startTime;
-    private ArrayList<Fish> listFish;
-    private int P1, P2;
-    private int N1, N2;
+    private static int P1, P2;
+    private static int N1, N2;
+    public static boolean startFlag;
+    private static boolean resultWindowFlag;
+    private static String statStr;
+    private StartMenu startMenu;
 }

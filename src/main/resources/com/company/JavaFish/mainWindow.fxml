@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyPressed="#keyPressed" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.JavaFish.MainController">
+   <children>
+      <Pane fx:id="modelPane" disable="true" prefHeight="750.0" prefWidth="900.0" />
+      <Pane prefHeight="717.0" prefWidth="900.0">
+         <children>
+            <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="787.0" layoutY="14.0" prefHeight="59.0" prefWidth="113.0" textAlignment="CENTER" textFill="#ffc600">
+               <font>
+                  <Font name="System Bold Italic" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="statistic" alignment="TOP_CENTER" layoutX="346.0" layoutY="255.0" prefHeight="104.0" prefWidth="208.0" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold Italic" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="900.0" prefHeight="750.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="startButton" layoutX="23.0" layoutY="33.0" mnemonicParsing="false" onAction="#startButtonClick" text="Start" />
+            <Button fx:id="stopButton" layoutX="109.0" layoutY="33.0" mnemonicParsing="false" onAction="#stopButtonClick" text="Stop" />
+            <RadioButton fx:id="showRadioButton" layoutX="48.0" layoutY="102.0" mnemonicParsing="false" onAction="#showRadioButtonClick" text="Show">
+               <toggleGroup>
+                  <ToggleGroup fx:id="simulationTime" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="hideRadioButton" layoutX="48.0" layoutY="122.0" mnemonicParsing="false" onAction="#hideRadioButtonClick" selected="true" text="Hide" toggleGroup="$simulationTime" />
+            <CheckBox fx:id="resultWindowCheckBox" layoutX="26.0" layoutY="155.0" mnemonicParsing="false" onAction="#resultWindowCheckBoxClick" text="Show Result Window" />
+         </children></Pane>
+   </children>
+</AnchorPane>

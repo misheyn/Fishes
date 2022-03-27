@@ -15,6 +15,9 @@ import java.util.*;
 
 public class Habitat extends Application {
 
+    public Habitat() {
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         instance = this;
@@ -207,10 +210,6 @@ public class Habitat extends Application {
     public static void setContinueFlag() {
         startFlag = true;
     }
-
-//    public Habitat() {
-//
-//    }
 
     public static Habitat getInstance() {
         Habitat localInstance = instance;

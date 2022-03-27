@@ -8,6 +8,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ResultWindow {
+
+    public ResultWindow() {
+    }
+
     public static void showMenu() throws IOException {
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -21,10 +25,6 @@ public class ResultWindow {
 
     public Stage getStage() {
         return window;
-    }
-
-    public ResultWindow() {
-
     }
 
     public static ResultWindow getInstance() {

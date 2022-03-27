@@ -2,7 +2,6 @@ package com.company.JavaFish;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -37,6 +36,32 @@ public class MainController {
     @FXML
     private CheckBox resultWindowCheckBox;
 
+    public Pane getPane() {
+        return modelPane;
+    }
+
+    public Label getStatistic() {
+        return statistic;
+    }
+
+    public void printLabel(String str) {
+        label.setText(str);
+    }
+
+    public void printStatistic(String str) {
+        statistic.setText(str);
+    }
+
+    public void switchButtonsOn() {
+        startButton.setDisable(false);
+        stopButton.setDisable(true);
+    }
+
+    public void switchButtonsOff() {
+        startButton.setDisable(true);
+        stopButton.setDisable(false);
+    }
+
     @FXML
     void keyPressed(KeyEvent event) throws IOException {
         if (event.getCode().equals(KeyCode.T)) {
@@ -50,40 +75,15 @@ public class MainController {
             }
         } else if (event.getCode().equals(KeyCode.B)) {
             if (!Habitat.startFlag) {
-                stopButton.setDisable(false);
-                startButton.setDisable(true);
+                switchButtonsOff();
                 Habitat.getInstance().startAction();
             }
         } else if (event.getCode().equals(KeyCode.E)) {
             if (Habitat.startFlag) {
-                startButton.setDisable(false);
-                stopButton.setDisable(true);
+                switchButtonsOn();
                 Habitat.getInstance().stopAction();
             }
         }
-    }
-    public void switchButtonsOn(){
-        startButton.setDisable(false);
-        stopButton.setDisable(true);
-    }
-    public void switchButtonsOff(){
-        startButton.setDisable(true);
-        stopButton.setDisable(false);
-    }
-    public Pane getPane() {
-        return modelPane;
-    }
-
-    public void printLabel(String str) {
-        label.setText(str);
-    }
-
-    public Label getStatistic() {
-        return statistic;
-    }
-
-    public void printStatistic(String str) {
-        statistic.setText(str);
     }
 
     @FXML
@@ -99,8 +99,7 @@ public class MainController {
     @FXML
     void startButtonClick(ActionEvent event) {
         if (!Habitat.startFlag) {
-            startButton.setDisable(true);
-            stopButton.setDisable(false);
+            switchButtonsOff();
             Habitat.getInstance().startAction();
         }
     }
@@ -108,15 +107,16 @@ public class MainController {
     @FXML
     void stopButtonClick(ActionEvent event) throws IOException {
         if (Habitat.startFlag) {
-            stopButton.setDisable(true);
-            startButton.setDisable(false);
+            switchButtonsOn();
             Habitat.getInstance().stopAction();
         }
     }
+
     @FXML
     void resultWindowCheckBoxClick(ActionEvent event) {
         Habitat.setResultWindowFlag();
     }
+
     @FXML
     void initialize() {
         resultWindowCheckBox.setSelected(true);

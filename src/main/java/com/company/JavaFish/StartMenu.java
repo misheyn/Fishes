@@ -8,23 +8,18 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class StartMenu {
+
+    public StartMenu() {
+    }
+
     public static void showMenu() throws IOException {
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         FXMLLoader fxmlLoader = new FXMLLoader(StartMenu.class.getResource("startMenu.fxml"));
-        controller = fxmlLoader.getController();
         Scene root = new Scene(fxmlLoader.load(), 400, 400);
         window.setScene(root);
-        window.setTitle("StartMenu");
+        window.setTitle("Start Menu");
         window.showAndWait();
-    }
-
-    public StartMenuController getController() {
-        return controller;
-    }
-
-    public StartMenu() {
-
     }
 
     public static StartMenu getInstance() {
@@ -47,6 +42,4 @@ public class StartMenu {
     }
 
     private static Stage window;
-    private static StartMenuController controller;
-    private int P1, P2;
 }

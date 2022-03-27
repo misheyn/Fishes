@@ -13,16 +13,12 @@ public class ResultWindowController {
 
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
     private Button CancelButton;
-
     @FXML
     private Button OKButton;
-
     @FXML
     private TextArea resultTextArea;
     @FXML
@@ -30,7 +26,7 @@ public class ResultWindowController {
 
     @FXML
     void CancelButtonClick(ActionEvent event) {
-        Habitat.unsetStopFlag();
+        Habitat.setContinueFlag();
         statWindow.setVisible(false);
         statWindow.setDisable(true);
         ResultWindow.getInstance().getStage().close();

@@ -56,7 +56,7 @@ public class Habitat extends Application {
             clearListFish();
             startTime = System.currentTimeMillis();
             mainController.switchButtonsOn();
-        }else{
+        } else {
             mainController.switchButtonsOff();
         }
     }
@@ -82,24 +82,19 @@ public class Habitat extends Application {
         FishArr.getInstance().vector.clear();
     }
 
-    private void update(long currentTime) throws IOException {
-        if (startFlag) {
-            Random random = new Random();
-            int P;
-            if ((currentTime / 1000) % N1 == 0) {
-                P = random.nextInt(300);
-                if (P1 <= P) {
+    private void bornFishes(long currentTime, int P, int N, String fish) {
+        Random random = new Random();
+        int randP;
+        if ((currentTime / 1000) % N == 0) {
+            randP = random.nextInt(300);
+            if (P <= randP) {
+                if (fish.equals("gold")) {
                     try {
                         bornGold();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                }
-            }
-
-            if ((currentTime / 1000) % N2 == 0) {
-                P = random.nextInt(300);
-                if (P2 <= P) {
+                } else if (fish.equals("guppy")) {
                     try {
                         bornGuppy();
                     } catch (FileNotFoundException e) {
@@ -107,6 +102,13 @@ public class Habitat extends Application {
                     }
                 }
             }
+        }
+    }
+
+    private void update(long currentTime) throws IOException {
+        if (startFlag) {
+            bornFishes(currentTime, P1, N1, "gold");
+            bornFishes(currentTime, P2, N2, "guppy");
             showTimeLabel();
         }
     }
@@ -143,7 +145,6 @@ public class Habitat extends Application {
         } else {
             statStr = "";
         }
-
     }
 
     private void bornGold() throws FileNotFoundException {
@@ -203,13 +204,13 @@ public class Habitat extends Application {
         startFlag = false;
     }
 
-    public static void unsetStopFlag() {
+    public static void setContinueFlag() {
         startFlag = true;
     }
 
-    public Habitat() {
-
-    }
+//    public Habitat() {
+//
+//    }
 
     public static Habitat getInstance() {
         Habitat localInstance = instance;
@@ -226,7 +227,6 @@ public class Habitat extends Application {
 
     private static volatile Habitat instance;
     private MainController mainController;
-    private StartMenuController startMenuController;
     private static Timer timer;
     public boolean timeFlag;
     private boolean statFlag;
@@ -236,5 +236,4 @@ public class Habitat extends Application {
     public static boolean startFlag;
     private static boolean resultWindowFlag;
     private static String statStr;
-    private StartMenu startMenu;
 }

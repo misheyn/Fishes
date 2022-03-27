@@ -10,31 +10,23 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 
 public class StartMenuController {
 
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
     private Button exitMenuButton;
-
     @FXML
     private ComboBox<String> goldenFishComboBox;
-
     @FXML
     private TextField goldenFishTextField;
-
     @FXML
     private ComboBox<String> guppyFishComboBox;
-
     @FXML
     private TextField guppyFishTextField;
-
     @FXML
     private DialogPane startMenu;
 
@@ -64,18 +56,6 @@ public class StartMenuController {
         startMenu.setVisible(false);
         startMenu.setDisable(true);
         StartMenu.getInstance().getStage().close();
-    }
-
-    public Pane getStartMenu() {
-        return startMenu;
-    }
-
-    public ComboBox<String> getGoldComboBox() {
-        return goldenFishComboBox;
-    }
-
-    public ComboBox<String> getGuppyComboBox() {
-        return guppyFishComboBox;
     }
 
     @FXML

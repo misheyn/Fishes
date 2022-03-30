@@ -8,7 +8,7 @@
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyPressed="#keyPressed" prefHeight="750.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.JavaFish.Controller">
    <children>
       <Pane fx:id="modelPane" disable="true" onKeyPressed="#keyPressed" prefHeight="750.0" prefWidth="900.0" />
-      <Pane onKeyPressed="#keyPressed" prefHeight="717.0" prefWidth="900.0">
+      <Pane focusTraversable="true" onKeyPressed="#keyPressed" prefHeight="717.0" prefWidth="900.0">
          <children>
             <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="787.0" layoutY="14.0" prefHeight="59.0" prefWidth="113.0" textAlignment="CENTER" textFill="#ffc600">
                <font>

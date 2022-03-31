@@ -5,19 +5,19 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyPressed="#keyPressed" prefHeight="750.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.JavaFish.Controller">
+<AnchorPane focusTraversable="true" onKeyPressed="#keyPressed" prefHeight="750.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.JavaFish.Controller">
    <children>
-      <Pane fx:id="modelPane" disable="true" onKeyPressed="#keyPressed" prefHeight="750.0" prefWidth="900.0" />
-      <Pane focusTraversable="true" onKeyPressed="#keyPressed" prefHeight="717.0" prefWidth="900.0">
+      <Pane fx:id="modelPane" disable="true" prefHeight="750.0" prefWidth="900.0" />
+      <Pane focusTraversable="true" prefHeight="750.0" prefWidth="900.0">
          <children>
-            <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="787.0" layoutY="14.0" prefHeight="59.0" prefWidth="113.0" textAlignment="CENTER" textFill="#ffc600">
+            <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="765.0" layoutY="5.0" prefHeight="65.0" prefWidth="135.0" style="-fx-background-color: #f0fff0;" textAlignment="CENTER" textFill="#ffc600">
                <font>
                   <Font name="System Bold Italic" size="24.0" />
                </font>
             </Label>
-            <Label fx:id="statistic" alignment="TOP_CENTER" layoutX="346.0" layoutY="255.0" prefHeight="104.0" prefWidth="208.0" textAlignment="CENTER">
+            <Label fx:id="statistic" alignment="CENTER" layoutX="281.0" layoutY="290.0" prefHeight="191.0" prefWidth="335.0" style="-fx-background-color: #ffffff; -fx-border-color: #008000;" textAlignment="CENTER">
                <font>
-                  <Font name="System Bold Italic" size="22.0" />
+                  <Font name="System Bold Italic" size="24.0" />
                </font>
             </Label>
          </children>

@@ -33,6 +33,10 @@ public class Controller {
         return statistic;
     }
 
+    public Label getTimeLabel() {
+        return label;
+    }
+
     public void printLabel(String str) {
         label.setText(str);
     }
@@ -43,7 +47,6 @@ public class Controller {
 
     @FXML
     void keyPressed(KeyEvent event) throws IOException {
-        System.out.println("ABOBA");
         if (event.getCode().equals(KeyCode.T)) {
             Habitat.getInstance().timeFlag = !Habitat.getInstance().timeFlag;
         } else if (event.getCode().equals(KeyCode.B)) {
@@ -56,7 +59,6 @@ public class Controller {
             }
         }
     }
-
 
     @FXML
     void initialize() {

@@ -33,7 +33,6 @@ public class Habitat extends Application {
         Background bGround = new Background(bImg);
         mainController.getPane().setBackground(bGround);
         initialize();
-        mainController.getStatistic().setVisible(true);
         stage.setTitle("Aquarium fishes");
         stage.setScene(root);
         stage.getIcons().add(new Image(new FileInputStream("src/image/fill.png")));
@@ -42,22 +41,21 @@ public class Habitat extends Application {
 
     public void startAction() {
         startFlag = true;
-        statFlag = false;
         startTime = System.currentTimeMillis();
         mainController.getStatistic().setVisible(false);
+        mainController.getTimeLabel().setVisible(false);
         startCycle();
     }
 
     public void stopAction() throws IOException {
-        statFlag = true;
         startFlag = false;
-        update(System.currentTimeMillis() - startTime);
         showStatLabel();
+        update(System.currentTimeMillis() - startTime);
         if (!startFlag) {
             timer.cancel();
             timer = new Timer();
-            clearListFish();
             startTime = System.currentTimeMillis();
+            clearListFish();
         }
     }
 
@@ -107,40 +105,38 @@ public class Habitat extends Application {
 
     private void update(long currentTime) throws IOException {
         if (startFlag) {
+            showTimeLabel();
             bornFishes(currentTime, P1, N1, "gold");
             bornFishes(currentTime, P2, N2, "guppy");
-            showTimeLabel();
         }
     }
 
-    private void showTimeLabel() {
-        String timeStr = "";
-
+    public void showTimeLabel() {
+        String timeStr;
         if (timeFlag) {
+            mainController.getTimeLabel().setVisible(true);
             if (startTime != 0) {
                 long time = System.currentTimeMillis() - startTime;
                 timeStr = "Time: " + time / 1000;
             } else {
                 timeStr = "0";
             }
+            mainController.printLabel(timeStr);
+        } else {
+            mainController.getTimeLabel().setVisible(false);
         }
-        mainController.printLabel(timeStr);
     }
 
     private void showStatLabel() {
         String statStr;
-        if (statFlag) {
-            long finalTime = System.currentTimeMillis() - startTime;
-            long countGold = listFish.stream().filter(i -> i instanceof GoldenFish).count();
-            long countGuppy = listFish.stream().filter(i -> i instanceof GuppyFish).count();
-            statStr = "Golden fish: " + countGold;
-            statStr += "\nGuppy fish: " + countGuppy;
-            statStr += "\nTime: " + finalTime / 1000;
-            mainController.getStatistic().setVisible(true);
-            mainController.printStatistic(statStr);
-        } else {
-            statStr = "";
-        }
+        long finalTime = System.currentTimeMillis() - startTime;
+        long countGold = listFish.stream().filter(i -> i instanceof GoldenFish).count();
+        long countGuppy = listFish.stream().filter(i -> i instanceof GuppyFish).count();
+        statStr = "Golden fish: " + countGold;
+        statStr += "\nGuppy fish: " + countGuppy;
+        statStr += "\nTime: " + finalTime / 1000;
+        mainController.getStatistic().setVisible(true);
+        mainController.printStatistic(statStr);
     }
 
     private void bornGold() throws FileNotFoundException {
@@ -163,17 +159,17 @@ public class Habitat extends Application {
     }
 
     private void initialize() {
-        N1 = 1;
+        N1 = 2;
         N2 = 5;
-        P1 = 30;
-        P2 = 50;
+        P1 = 40;
+        P2 = 60;
         listFish = new ArrayList<>();
         timeFlag = false;
-        statFlag = false;
         startFlag = false;
         timer = new Timer();
         startTime = System.currentTimeMillis();
-//        startAction();
+        mainController.getStatistic().setVisible(false);
+        mainController.getTimeLabel().setVisible(false);
     }
 
     public static Habitat getInstance() {
@@ -193,7 +189,6 @@ public class Habitat extends Application {
     private Controller mainController;
     private static Timer timer;
     public boolean timeFlag;
-    private boolean statFlag;
     private long startTime;
     private static int P1, P2;
     private static int N1, N2;

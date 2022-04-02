@@ -14,7 +14,7 @@
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="320.0" />
    </expandableContent>
    <header>
-      <AnchorPane prefHeight="450.0" prefWidth="400.0" style="-fx-background-color: #f0f8ff;">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="400.0" style="-fx-background-color: #f0f8ff;">
          <children>
             <Label layoutX="27.0" layoutY="14.0" prefHeight="71.0" prefWidth="340.0" text="You are in the main menu. Here you can select the characteristics for the birth of the fish or skip this item by pressing the OK button." textAlignment="CENTER" wrapText="true">
                <font>

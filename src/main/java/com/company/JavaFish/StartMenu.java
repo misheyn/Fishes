@@ -16,7 +16,7 @@ public class StartMenu {
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         FXMLLoader fxmlLoader = new FXMLLoader(StartMenu.class.getResource("startMenu.fxml"));
-        Scene root = new Scene(fxmlLoader.load(), 400, 400);
+        Scene root = new Scene(fxmlLoader.load());
         window.setScene(root);
         window.setTitle("Start Menu");
         window.showAndWait();

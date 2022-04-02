@@ -7,19 +7,19 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ResultWindow {
+public class FishLogWindow {
 
-    public ResultWindow() {
+    public FishLogWindow() {
     }
 
-    public static void showMenu() throws IOException {
+    public static void showWindow() throws IOException {
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
-        FXMLLoader fxmlLoader = new FXMLLoader(StartMenu.class.getResource("resultWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StartMenu.class.getResource("fishLogWindow.fxml"));
         fxmlLoader.getRoot();
         Scene root = new Scene(fxmlLoader.load());
         window.setScene(root);
-        window.setTitle("Result Window");
+        window.setTitle("Living Fishes Window");
         window.showAndWait();
     }
 
@@ -27,19 +27,20 @@ public class ResultWindow {
         return window;
     }
 
-    public static ResultWindow getInstance() {
-        ResultWindow localInstance = instance;
+    public static FishLogWindow getInstance() {
+        FishLogWindow localInstance = instance;
         if (localInstance == null) {
-            synchronized (ResultWindow.class) {
+            synchronized (FishLogWindow.class) {
                 localInstance = instance;
                 if (localInstance == null) {
-                    instance = localInstance = new ResultWindow();
+                    instance = localInstance = new FishLogWindow();
                 }
             }
         }
         return localInstance;
     }
 
-    private static volatile ResultWindow instance;
+    private static volatile FishLogWindow instance;
     private static Stage window;
+
 }

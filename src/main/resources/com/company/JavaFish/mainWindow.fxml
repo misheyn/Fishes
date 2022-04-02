@@ -3,6 +3,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -58,5 +61,27 @@
                </font>
             </Label>
          </children></Pane>
+      <MenuBar prefHeight="30.0" prefWidth="300.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Control">
+            <items>
+              <MenuItem fx:id="startMenu" mnemonicParsing="false" onAction="#startButtonClick" text="Start" />
+                  <MenuItem fx:id="stopMenu" mnemonicParsing="false" onAction="#stopButtonClick" text="Stop" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Simulation time">
+            <items>
+              <MenuItem fx:id="showMenu" mnemonicParsing="false" onAction="#showMenuItemAction" text="Show" />
+                  <MenuItem fx:id="hideMenu" mnemonicParsing="false" onAction="#hideMenuItemAction" text="Hide" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Result window">
+            <items>
+              <MenuItem fx:id="showResultWindow" mnemonicParsing="false" onAction="#showResultAction" text="Show" />
+                  <MenuItem fx:id="unshowResultWindow" mnemonicParsing="false" onAction="#notShowResultAction" text="Don't show" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
    </children>
 </AnchorPane>

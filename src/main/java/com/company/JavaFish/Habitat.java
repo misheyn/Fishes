@@ -59,8 +59,10 @@ public class Habitat extends Application {
             clearListFish();
             startTime = System.currentTimeMillis();
             mainController.switchButtonsOn();
+            mainController.switchMenuItemOn();
         } else {
             mainController.switchButtonsOff();
+            mainController.switchMenuItemOff();
         }
     }
 
@@ -197,6 +199,10 @@ public class Habitat extends Application {
 
     public static void setResultWindowFlag() {
         resultWindowFlag = !resultWindowFlag;
+    }
+
+    public static boolean getResultWindowFlag() {
+        return resultWindowFlag;
     }
 
     public static String getStatStr() {

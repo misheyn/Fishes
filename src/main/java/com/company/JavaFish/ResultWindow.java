@@ -13,6 +13,7 @@ public class ResultWindow {
     }
 
     public static void showMenu() throws IOException {
+        getInstance().showStartMenuFlag = false;
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         FXMLLoader fxmlLoader = new FXMLLoader(StartMenu.class.getResource("resultWindow.fxml"));
@@ -21,6 +22,7 @@ public class ResultWindow {
         window.setScene(root);
         window.setTitle("Result Window");
         window.showAndWait();
+        if (getInstance().showStartMenuFlag) StartMenu.showMenu();
     }
 
     public Stage getStage() {
@@ -40,6 +42,7 @@ public class ResultWindow {
         return localInstance;
     }
 
+    public boolean showStartMenuFlag;
     private static volatile ResultWindow instance;
     private static Stage window;
 }

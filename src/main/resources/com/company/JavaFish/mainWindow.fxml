@@ -13,80 +13,80 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyPressed="#keyPressed" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.JavaFish.MainController">
-   <children>
-      <Pane fx:id="modelPane" disable="true" prefHeight="750.0" prefWidth="900.0" />
-      <Pane prefHeight="717.0" prefWidth="900.0">
-         <children>
-            <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="787.0" layoutY="14.0" prefHeight="59.0" prefWidth="113.0" textAlignment="CENTER" textFill="#ffc600">
-               <font>
-                  <Font name="System Bold Italic" size="24.0" />
-               </font>
-            </Label>
-            <Label fx:id="statistic" alignment="TOP_CENTER" layoutX="346.0" layoutY="255.0" prefHeight="104.0" prefWidth="208.0" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold Italic" size="22.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-      <Pane layoutX="900.0" prefHeight="750.0" prefWidth="200.0">
-         <children>
-            <Button fx:id="startButton" layoutX="17.0" layoutY="41.0" mnemonicParsing="false" onAction="#startButtonClick" prefHeight="40.0" prefWidth="65.0" text="Start">
-               <font>
-                  <Font name="System Bold Italic" size="18.0" />
-               </font></Button>
-            <Button fx:id="stopButton" layoutX="124.0" layoutY="40.0" mnemonicParsing="false" onAction="#stopButtonClick" prefHeight="40.0" prefWidth="65.0" text="Stop" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold Italic" size="18.0" />
-               </font></Button>
-            <RadioButton fx:id="showRadioButton" layoutX="20.0" layoutY="237.0" mnemonicParsing="false" onAction="#showRadioButtonClick" prefHeight="27.0" prefWidth="85.0" text="Show" textFill="GREEN">
-               <toggleGroup>
-                  <ToggleGroup fx:id="simulationTime" />
-               </toggleGroup>
-               <font>
-                  <Font name="System Italic" size="18.0" />
-               </font>
-            </RadioButton>
-            <RadioButton fx:id="hideRadioButton" layoutX="109.0" layoutY="237.0" mnemonicParsing="false" onAction="#hideRadioButtonClick" selected="true" text="Hide" textAlignment="CENTER" textFill="#bfbf05" toggleGroup="$simulationTime">
-               <font>
-                  <Font name="System Italic" size="18.0" />
-               </font></RadioButton>
-            <CheckBox fx:id="resultWindowCheckBox" layoutX="15.0" layoutY="363.0" mnemonicParsing="false" onAction="#resultWindowCheckBoxClick" prefHeight="20.0" prefWidth="171.0" text="Show Result Window">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font></CheckBox>
-            <Label alignment="CENTER" layoutX="17.0" layoutY="184.0" prefHeight="30.0" prefWidth="172.0" text="Simulation time:" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold Italic" size="18.0" />
-               </font>
-            </Label>
-            <Button fx:id="currentObjectsButton" layoutX="22.0" layoutY="465.0" mnemonicParsing="false" onAction="#currentObjectsButtonClick" prefHeight="37.0" prefWidth="156.0" text="Current Objects">
-               <font>
-                  <Font name="System Bold Italic" size="16.0" />
-               </font>
-            </Button>
-         </children></Pane>
-      <MenuBar prefHeight="30.0" prefWidth="270.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="Control">
-            <items>
-              <MenuItem fx:id="startMenu" mnemonicParsing="false" onAction="#startButtonClick" text="Start" />
-                  <MenuItem fx:id="stopMenu" mnemonicParsing="false" onAction="#stopButtonClick" text="Stop" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Simulation time">
-            <items>
-              <MenuItem fx:id="showMenu" mnemonicParsing="false" onAction="#showMenuItemAction" text="Show" />
-                  <MenuItem fx:id="hideMenu" mnemonicParsing="false" onAction="#hideMenuItemAction" text="Hide" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Result window">
-            <items>
-              <MenuItem fx:id="showResultWindow" mnemonicParsing="false" onAction="#showResultAction" text="Show" />
-                  <MenuItem fx:id="unshowResultWindow" mnemonicParsing="false" onAction="#notShowResultAction" text="Don't show" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </children>
+    <children>
+        <Pane fx:id="modelPane" disable="true" prefHeight="750.0" prefWidth="900.0" />
+        <Pane prefHeight="717.0" prefWidth="900.0">
+            <children>
+                <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="787.0" layoutY="14.0" prefHeight="59.0" prefWidth="113.0" textAlignment="CENTER" textFill="#ffc600">
+                    <font>
+                        <Font name="System Bold Italic" size="24.0" />
+                    </font>
+                </Label>
+                <Label fx:id="statistic" alignment="TOP_CENTER" layoutX="346.0" layoutY="255.0" prefHeight="104.0" prefWidth="208.0" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold Italic" size="22.0" />
+                    </font>
+                </Label>
+            </children>
+        </Pane>
+        <Pane layoutX="900.0" prefHeight="750.0" prefWidth="200.0">
+            <children>
+                <Button fx:id="startButton" layoutX="17.0" layoutY="41.0" mnemonicParsing="false" onAction="#startButtonClick" prefHeight="40.0" prefWidth="68.0" text="Start">
+                    <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                    </font></Button>
+                <Button fx:id="stopButton" layoutX="124.0" layoutY="40.0" mnemonicParsing="false" onAction="#stopButtonClick" prefHeight="40.0" prefWidth="65.0" text="Stop" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                    </font></Button>
+                <RadioButton fx:id="showRadioButton" layoutX="20.0" layoutY="237.0" mnemonicParsing="false" onAction="#showRadioButtonClick" prefHeight="27.0" prefWidth="85.0" text="Show" textFill="GREEN">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="simulationTime" />
+                    </toggleGroup>
+                    <font>
+                        <Font name="System Italic" size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="hideRadioButton" layoutX="109.0" layoutY="237.0" mnemonicParsing="false" onAction="#hideRadioButtonClick" selected="true" text="Hide" textAlignment="CENTER" textFill="#bfbf05" toggleGroup="$simulationTime">
+                    <font>
+                        <Font name="System Italic" size="18.0" />
+                    </font></RadioButton>
+                <CheckBox fx:id="resultWindowCheckBox" layoutX="15.0" layoutY="363.0" mnemonicParsing="false" onAction="#resultWindowCheckBoxClick" prefHeight="20.0" prefWidth="171.0" text="Show Result Window">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font></CheckBox>
+                <Label alignment="CENTER" layoutX="17.0" layoutY="184.0" prefHeight="30.0" prefWidth="172.0" text="Simulation time:" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                    </font>
+                </Label>
+                <Button fx:id="currentObjectsButton" layoutX="22.0" layoutY="465.0" mnemonicParsing="false" onAction="#currentObjectsButtonClick" prefHeight="37.0" prefWidth="156.0" text="Current Objects">
+                    <font>
+                        <Font name="System Bold Italic" size="16.0" />
+                    </font>
+                </Button>
+            </children></Pane>
+        <MenuBar prefHeight="30.0" prefWidth="270.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="Control">
+                    <items>
+                        <MenuItem fx:id="startMenu" mnemonicParsing="false" onAction="#startButtonClick" text="Start" />
+                        <MenuItem fx:id="stopMenu" mnemonicParsing="false" onAction="#stopButtonClick" text="Stop" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Simulation time">
+                    <items>
+                        <MenuItem fx:id="showMenu" mnemonicParsing="false" onAction="#showMenuItemAction" text="Show" />
+                        <MenuItem fx:id="hideMenu" mnemonicParsing="false" onAction="#hideMenuItemAction" text="Hide" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Result window">
+                    <items>
+                        <MenuItem fx:id="showResultWindow" mnemonicParsing="false" onAction="#showResultAction" text="Show" />
+                        <MenuItem fx:id="unshowResultWindow" mnemonicParsing="false" onAction="#notShowResultAction" text="Don't show" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </children>
 </AnchorPane>

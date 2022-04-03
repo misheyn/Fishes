@@ -61,6 +61,22 @@ public class StartMenuController {
             guppyFishTextField.setText("2");
             Habitat.setN2(2);
         }
+        try {
+            GoldenFish.lifeTime = Long.parseLong(lifetimeGoldTextField.getText());
+        }catch (NumberFormatException e){
+            alert.showAndWait();
+            flag = 0;
+            lifetimeGoldTextField.setText("10");
+            GoldenFish.lifeTime = 10;
+        }
+        try {
+            GuppyFish.lifeTime = Long.parseLong(lifetimeGuppyTextField.getText());
+        }catch (NumberFormatException e){
+            alert.showAndWait();
+            flag = 0;
+            lifetimeGuppyTextField.setText("20");
+            GuppyFish.lifeTime = 20;
+        }
         if (flag == 1) {
             startMenu.setVisible(false);
             startMenu.setDisable(true);
@@ -81,6 +97,8 @@ public class StartMenuController {
         guppyFishTextField.setText("2");
         startMenu.setContent(null);
         startMenu.setGraphic(null);
+        lifetimeGoldTextField.setText("10");
+        lifetimeGuppyTextField.setText("20");
     }
 
 }

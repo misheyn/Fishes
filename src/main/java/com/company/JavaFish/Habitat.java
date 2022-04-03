@@ -12,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Habitat extends Application {
 
@@ -22,7 +24,7 @@ public class Habitat extends Application {
     public void start(Stage stage) throws IOException {
         instance = this;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mainWindow.fxml"));
-        Scene root = new Scene(fxmlLoader.load(), 1100, 750);
+        Scene root = new Scene(fxmlLoader.load());
         mainController = fxmlLoader.getController();
         Image img = new Image(new FileInputStream("src/image/aquarium.png"));
         BackgroundImage bImg = new BackgroundImage(img,
@@ -83,7 +85,10 @@ public class Habitat extends Application {
     }
 
     private void clearListFish() {
-        FishArr.getInstance().vector.forEach((tmp) -> mainController.getPane().getChildren().remove(tmp.getImageView()));
+        FishArr.getInstance().linkedList.forEach(tmp -> mainController.getPane().getChildren().remove(tmp.getImageView()));
+        FishArr.getInstance().linkedList.clear();
+        FishArr.getInstance().treeMap.clear();
+        FishArr.getInstance().hashSet.clear();
         FishArr.getInstance().vector.clear();
     }
 
@@ -95,13 +100,13 @@ public class Habitat extends Application {
             if (P <= randP) {
                 if (fish.equals("gold")) {
                     try {
-                        bornGold();
+                        bornGold(currentTime / 1000);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
                 } else if (fish.equals("guppy")) {
                     try {
-                        bornGuppy();
+                        bornGuppy(currentTime / 1000);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -115,7 +120,27 @@ public class Habitat extends Application {
             bornFishes(currentTime, P1, N1, "gold");
             bornFishes(currentTime, P2, N2, "guppy");
             showTimeLabel();
+            clearDeadFish(currentTime);
         }
+    }
+
+    private void clearDeadFish(long currentTime) {
+        AtomicReference<Fish> foundedFish = new AtomicReference<>();
+        FishArr.getInstance().linkedList.forEach(tmp -> {
+            if (currentTime / 1000 - tmp.getBirthTime() > tmp.getLifeTime()) {
+                AtomicInteger foundedId = new AtomicInteger();
+                FishArr.getInstance().treeMap.forEach((id, birthTime) -> {
+                    if (tmp.getBirthTime() == birthTime) {
+                        foundedId.set(id);
+                    }
+                });
+                FishArr.getInstance().hashSet.remove(foundedId.get());
+                FishArr.getInstance().treeMap.remove(foundedId.get());
+                mainController.getPane().getChildren().remove(tmp.getImageView());
+                foundedFish.set(tmp);
+            }
+        });
+        FishArr.getInstance().linkedList.remove(foundedFish.get());
     }
 
     private void showTimeLabel() {
@@ -152,18 +177,26 @@ public class Habitat extends Application {
         }
     }
 
-    private void bornGold() throws FileNotFoundException {
+    private void bornGold(long currentTime) throws FileNotFoundException {
         Random random = new Random();
-        GoldenFish fish = new GoldenFish(random.nextInt((int) mainController.getPane().getWidth() - 200), random.nextInt((int) mainController.getPane().getHeight() - 100));
+        Integer ID = random.nextInt(100);
+        GoldenFish fish = new GoldenFish(currentTime, random.nextInt((int) mainController.getPane().getWidth() - 200), random.nextInt((int) mainController.getPane().getHeight() - 100));
         mainController.getPane().getChildren().add(fish.getImageView());
         FishArr.getInstance().vector.add(fish);
+        FishArr.getInstance().linkedList.add(fish);
+        FishArr.getInstance().hashSet.add(ID);
+        FishArr.getInstance().treeMap.put(ID, currentTime);
     }
 
-    private void bornGuppy() throws FileNotFoundException {
+    private void bornGuppy(long currentTime) throws FileNotFoundException {
         Random random = new Random();
-        GuppyFish fish = new GuppyFish(random.nextInt((int) mainController.getPane().getWidth() - 200), random.nextInt((int) mainController.getPane().getHeight() - 100));
+        Integer ID = random.nextInt(100);
+        GuppyFish fish = new GuppyFish(currentTime, random.nextInt((int) mainController.getPane().getWidth() - 200), random.nextInt((int) mainController.getPane().getHeight() - 100));
         mainController.getPane().getChildren().add(fish.getImageView());
         FishArr.getInstance().vector.add(fish);
+        FishArr.getInstance().linkedList.add(fish);
+        FishArr.getInstance().hashSet.add(ID);
+        FishArr.getInstance().treeMap.put(ID, currentTime);
     }
 
     public static void main(String[] args) {
@@ -172,10 +205,6 @@ public class Habitat extends Application {
     }
 
     private void initialize() throws IOException {
-        timeFlag = false;
-        statFlag = false;
-        startFlag = false;
-        resultWindowFlag = true;
         StartMenu.showMenu();
         timer = new Timer();
         startTime = System.currentTimeMillis();
@@ -233,12 +262,12 @@ public class Habitat extends Application {
     private static volatile Habitat instance;
     private MainController mainController;
     private static Timer timer;
-    public boolean timeFlag;
-    private boolean statFlag;
-    private long startTime;
+    public boolean timeFlag = false;
+    private boolean statFlag = false;
+    public long startTime;
     private static int P1, P2;
     private static int N1, N2;
-    public static boolean startFlag;
-    private static boolean resultWindowFlag;
+    public static boolean startFlag = false;
+    private static boolean resultWindowFlag = true;
     private static String statStr;
 }

@@ -13,6 +13,7 @@ public class FishLogWindow {
     }
 
     public static void showWindow() throws IOException {
+        getInstance().startTime = System.currentTimeMillis();
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         FXMLLoader fxmlLoader = new FXMLLoader(StartMenu.class.getResource("fishLogWindow.fxml"));
@@ -39,7 +40,7 @@ public class FishLogWindow {
         }
         return localInstance;
     }
-
+    public long startTime;
     private static volatile FishLogWindow instance;
     private static Stage window;
 

@@ -193,11 +193,15 @@ public class MainController {
 
     @FXML
     void currentObjectsButtonClick(ActionEvent event) throws IOException {
+        Habitat.startFlag = !Habitat.startFlag;
         FishLogWindow.showWindow();
+        Habitat.startFlag = !Habitat.startFlag;
+        Habitat.getInstance().startTime += System.currentTimeMillis() - FishLogWindow.getInstance().startTime;
     }
 
     @FXML
     void initialize() {
+        stopButton.setDisable(true);
         resultWindowCheckBox.setSelected(true);
         unshowResultWindow.setDisable(false);
         showResultWindow.setDisable(true);

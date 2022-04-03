@@ -1,5 +1,6 @@
 package com.company.JavaFish;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -33,11 +34,12 @@ public class ResultWindowController {
     }
 
     @FXML
-    void OKButtonClick(ActionEvent event) {
+    void OKButtonClick(ActionEvent event) throws IOException {
         Habitat.setStopFlag();
         statWindow.setVisible(false);
         statWindow.setDisable(true);
         ResultWindow.getInstance().getStage().close();
+        ResultWindow.getInstance().showStartMenuFlag = true;
     }
 
     @FXML

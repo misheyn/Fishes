@@ -7,7 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 abstract class Fish {
-    public Fish(int _x, int _y, String path) throws FileNotFoundException {
+    public Fish(long _burstTime, int _x, int _y, String path) throws FileNotFoundException {
+        birthTime = _burstTime;
         Image image = new Image(new FileInputStream(path));
         imageView = new ImageView(image);
         imageView.setX(_x);
@@ -21,5 +22,14 @@ abstract class Fish {
         return imageView;
     }
 
-    private final ImageView imageView;
+    public long getBirthTime() {
+        return birthTime;
+    }
+
+    public long getLifeTime() {
+        return 0;
+    }
+
+    long birthTime;
+    final ImageView imageView;
 }

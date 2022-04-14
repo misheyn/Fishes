@@ -60,6 +60,11 @@
                   <Font name="System Bold Italic" size="18.0" />
                </font>
             </Label>
+            <Button fx:id="currentObjectsButton" layoutX="22.0" layoutY="465.0" mnemonicParsing="false" onAction="#currentObjectsButtonClick" prefHeight="37.0" prefWidth="156.0" text="Current Objects">
+               <font>
+                  <Font name="System Bold Italic" size="16.0" />
+               </font>
+            </Button>
          </children></Pane>
       <MenuBar prefHeight="30.0" prefWidth="270.0">
         <menus>

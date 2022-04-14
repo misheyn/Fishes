@@ -17,7 +17,7 @@ public class ResultWindow {
         window.initModality(Modality.APPLICATION_MODAL);
         FXMLLoader fxmlLoader = new FXMLLoader(StartMenu.class.getResource("resultWindow.fxml"));
         fxmlLoader.getRoot();
-        Scene root = new Scene(fxmlLoader.load(), 400, 400);
+        Scene root = new Scene(fxmlLoader.load());
         window.setScene(root);
         window.setTitle("Result Window");
         window.showAndWait();

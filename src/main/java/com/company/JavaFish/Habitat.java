@@ -202,6 +202,8 @@ public class Habitat extends Application {
     public static void main(String[] args) {
         launch();
         timer.cancel();
+//        Habitat.getInstance().goldenThread.stopFlag = true;
+//        Habitat.getInstance().guppyThread.stopFlag = true;
     }
 
     private void initialize() throws IOException {
@@ -270,4 +272,6 @@ public class Habitat extends Application {
     public static boolean startFlag = false;
     private static boolean resultWindowFlag = true;
     private static String statStr;
+    public BaseAI goldenThread;
+    public BaseAI guppyThread;
 }

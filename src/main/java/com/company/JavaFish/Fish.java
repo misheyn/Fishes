@@ -6,9 +6,11 @@ import javafx.scene.image.ImageView;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-abstract class Fish {
+abstract class Fish implements IBehaviour{
     public Fish(long _burstTime, int _x, int _y, String path) throws FileNotFoundException {
         birthTime = _burstTime;
+        x = _x;
+        y = _y;
         Image image = new Image(new FileInputStream(path));
         imageView = new ImageView(image);
         imageView.setX(_x);
@@ -30,6 +32,11 @@ abstract class Fish {
         return 0;
     }
 
+    public long getMoveSpeed() {
+        return 0;
+    }
+
+    protected int x, y;
     long birthTime;
     final ImageView imageView;
 }

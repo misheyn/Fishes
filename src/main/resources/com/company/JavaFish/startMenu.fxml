@@ -9,18 +9,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<DialogPane fx:id="startMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.JavaFish.StartMenuController">
+<DialogPane fx:id="startMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.JavaFish.StartMenuController">
    <expandableContent>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="320.0" />
    </expandableContent>
    <header>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="400.0" style="-fx-background-color: #f0f8ff;">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: #f0f8ff;">
          <children>
             <Label layoutX="27.0" layoutY="14.0" prefHeight="71.0" prefWidth="340.0" text="You are in the main menu. Here you can select the characteristics for the birth of the fish or skip this item by pressing the OK button." textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="System Italic" size="13.0" />
                </font></Label>
-            <Button fx:id="exitMenuButton" layoutX="140.0" layoutY="390.0" mnemonicParsing="false" onAction="#exitMenuButtonClick" prefHeight="18.0" prefWidth="114.0" text="OK" textFill="DARKGREEN">
+            <Button fx:id="exitMenuButton" layoutX="140.0" layoutY="329.0" mnemonicParsing="false" onAction="#exitMenuButtonClick" prefHeight="18.0" prefWidth="114.0" text="OK" textFill="DARKGREEN">
                <effect>
                   <Blend />
                </effect>
@@ -50,13 +50,6 @@
                   <Font name="System Bold Italic" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="170.0" layoutY="290.0" text="Lifetime">
-               <font>
-                  <Font name="System Bold Italic" size="14.0" />
-               </font>
-            </Label>
-            <TextField fx:id="lifetimeGoldTextField" layoutX="30.0" layoutY="324.0" prefHeight="25.0" prefWidth="100.0" />
-            <TextField fx:id="lifetimeGuppyTextField" layoutX="279.0" layoutY="324.0" prefHeight="25.0" prefWidth="100.0" />
          </children>
       </AnchorPane>
    </header>

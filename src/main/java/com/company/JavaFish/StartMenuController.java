@@ -26,10 +26,6 @@ public class StartMenuController {
     private TextField guppyFishTextField;
     @FXML
     private DialogPane startMenu;
-    @FXML
-    private TextField lifetimeGoldTextField;
-    @FXML
-    private TextField lifetimeGuppyTextField;
 
     @FXML
     void exitMenuButtonClick(ActionEvent event) {

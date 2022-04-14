@@ -47,8 +47,6 @@ public class MainController {
     private MenuItem showResultWindow;
     @FXML
     private MenuItem unshowResultWindow;
-    @FXML
-    private Button currentObjectsButton;
 
     public Pane getPane() {
         return modelPane;
@@ -189,11 +187,6 @@ public class MainController {
         resultWindowCheckBox.setSelected(true);
         unshowResultWindow.setDisable(false);
         showResultWindow.setDisable(true);
-    }
-
-    @FXML
-    void currentObjectsButtonClick(ActionEvent event) throws IOException {
-        FishLogWindow.showWindow();
     }
 
     @FXML

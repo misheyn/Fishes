@@ -158,6 +158,8 @@ public class MainController {
     @FXML
     void startButtonClick(ActionEvent event) {
         if (!Habitat.startFlag) {
+//            waitGuppyButton.setDisable(false);
+//            waitGoldenButton.setDisable(false);
             switchButtonsOff();
             switchMenuItemOff();
             Habitat.getInstance().startAction();
@@ -211,13 +213,14 @@ public class MainController {
 
     @FXML
     public void waitGoldenButtonClick(ActionEvent keyEvent) throws InterruptedException {
-//        synchronized (Habitat.getInstance().goldenThread) {
-        Habitat.getInstance().goldenThread.timerWait();
-//        Habitat.getInstance().goldenThread.wait();
+        synchronized (Habitat.getInstance().goldenThread) {
+//        Habitat.getInstance().goldenThread.timerWait();
+        Habitat.getInstance().goldenThread.wait();
             waitGoldenButton.setDisable(true);
             awakeGoldenButton.setDisable(false);
-//        }
+        }
     }
+
 
     @FXML
     public void awakeGuppyButtonClick(ActionEvent keyEvent) {
@@ -245,6 +248,10 @@ public class MainController {
 
     @FXML
     void initialize() {
+//        waitGoldenButton.setDisable(true);
+//        awakeGoldenButton.setDisable(true);
+//        waitGuppyButton.setDisable(true);
+//        awakeGuppyButton.setDisable(true);
         stopButton.setDisable(true);
         resultWindowCheckBox.setSelected(true);
         unshowResultWindow.setDisable(false);

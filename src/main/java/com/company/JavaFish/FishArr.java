@@ -29,7 +29,7 @@ public class FishArr {
     }
 
     public Vector<Fish> vector;
-    public LinkedList<Fish> linkedList;
+    public final LinkedList<Fish> linkedList;
     public HashSet<Integer> hashSet;
     public TreeMap<Integer, Long> treeMap;
 }

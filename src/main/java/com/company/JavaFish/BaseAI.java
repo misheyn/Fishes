@@ -1,6 +1,10 @@
 package com.company.JavaFish;
 
+import javafx.application.Platform;
+
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 abstract class BaseAI extends Thread {
     BaseAI(String name) {
@@ -13,26 +17,27 @@ abstract class BaseAI extends Thread {
     }
 
     public void run() {
-        while (!stopFlag) {
-            if (flag) {
-                if (!FishArr.getInstance().linkedList.isEmpty())
-                FishArr.getInstance().linkedList.forEach(tmp -> {
-                    if (tmp instanceof GoldenFish) tmp.move();
-                });
-            } else {
-                if (!FishArr.getInstance().linkedList.isEmpty())
-                    FishArr.getInstance().linkedList.forEach(tmp -> {
-                        if (tmp instanceof GuppyFish) tmp.move();
-                    });
+        moveTimer = new Timer();
+        moveTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                synchronized (FishArr.getInstance().linkedList) {
+                    if (!FishArr.getInstance().linkedList.isEmpty())
+                        if (flag) {
+                            FishArr.getInstance().linkedList.forEach(tmp -> {
+                                if (tmp instanceof GoldenFish) tmp.move();
+                            });
+                        } else {
+                            FishArr.getInstance().linkedList.forEach(tmp -> {
+                                if (tmp instanceof GuppyFish) tmp.move();
+                            });
+                        }
+                }
             }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        }, 0, 100);
     }
 
+    public Timer moveTimer;
     public boolean stopFlag;
     private boolean flag;
 }

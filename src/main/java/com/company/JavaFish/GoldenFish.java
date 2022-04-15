@@ -6,16 +6,17 @@ public class GoldenFish extends Fish {
 
     public GoldenFish(long burstTime, int _x, int _y) throws FileNotFoundException {
         super(burstTime, _x, _y, "src/image/goldenFish.png");
+        super.getImageView().setScaleX(-1);
     }
 
     @Override
     public void move() {
         super.x += moveSpeed;
-        if (super.x > MainController.width - 200) {
-            super.getImageView().setRotate(90);
+        if (moveSpeed < 0) super.getImageView().setScaleX(1);
+        else super.getImageView().setScaleX(-1);
+        if (super.x >= Habitat.getInstance().width - 200) {
             moveSpeed = -moveSpeed;
-        } else if (super.x < 0) {
-            super.getImageView().setRotate(0);
+        } else if (super.x <= 0) {
             moveSpeed = -moveSpeed;
         }
         super.getImageView().setX(super.x);
@@ -32,6 +33,6 @@ public class GoldenFish extends Fish {
     }
 
     static long lifeTime;
-    static int moveSpeed = 10;
+    static int moveSpeed = 5;
 
 }

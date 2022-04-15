@@ -27,11 +27,7 @@ public class Habitat extends Application {
         Scene root = new Scene(fxmlLoader.load());
         mainController = fxmlLoader.getController();
         Image img = new Image(new FileInputStream("src/image/aquarium.png"));
-        BackgroundImage bImg = new BackgroundImage(img,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT);
+        BackgroundImage bImg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         Background bGround = new Background(bImg);
         mainController.getPane().setBackground(bGround);
         initialize();
@@ -39,6 +35,8 @@ public class Habitat extends Application {
         stage.setTitle("Aquarium fishes");
         stage.setScene(root);
         stage.getIcons().add(new Image(new FileInputStream("src/image/fill.png")));
+        width = 900;
+        height = 750;
         stage.show();
     }
 
@@ -47,6 +45,8 @@ public class Habitat extends Application {
         statFlag = false;
         startTime = System.currentTimeMillis();
         mainController.getStatistic().setVisible(false);
+        goldenThread.start();
+        guppyThread.start();
         startCycle();
     }
 
@@ -202,14 +202,20 @@ public class Habitat extends Application {
     public static void main(String[] args) {
         launch();
         timer.cancel();
-//        Habitat.getInstance().goldenThread.stopFlag = true;
-//        Habitat.getInstance().guppyThread.stopFlag = true;
+        Habitat.getInstance().goldenThread.moveTimer.cancel();
+        Habitat.getInstance().guppyThread.moveTimer.cancel();
+        Habitat.getInstance().goldenThread.stopFlag = true;
+        Habitat.getInstance().guppyThread.stopFlag = true;
     }
 
     private void initialize() throws IOException {
         StartMenu.showMenu();
         timer = new Timer();
         startTime = System.currentTimeMillis();
+        goldenThread = new BaseAI("Golden") {
+        };
+        guppyThread = new BaseAI("Guppy") {
+        };
     }
 
     public static void setN1(int n1) {
@@ -274,4 +280,6 @@ public class Habitat extends Application {
     private static String statStr;
     public BaseAI goldenThread;
     public BaseAI guppyThread;
+    public int width;
+    public int height;
 }

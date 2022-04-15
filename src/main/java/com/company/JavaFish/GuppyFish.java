@@ -11,11 +11,15 @@ public class GuppyFish extends Fish {
     @Override
     public void move() {
         super.y += moveSpeed;
-        if (super.y > MainController.height - 100) {
-            super.getImageView().setRotate(90);
+        if (moveSpeed < 0) super.getImageView().setRotate(0);
+        else super.getImageView().setRotate(90);
+
+
+        if (super.y >= Habitat.getInstance().height - 100) {
+            super.y = Habitat.getInstance().height - 100;
             moveSpeed = -moveSpeed;
-        } else if (super.y < 0) {
-            super.getImageView().setRotate(0);
+        } else if (super.y <= 0) {
+            super.y = 0;
             moveSpeed = -moveSpeed;
         }
         super.getImageView().setY(super.y);
@@ -32,6 +36,6 @@ public class GuppyFish extends Fish {
     }
 
     static long lifeTime;
-    static int moveSpeed = 10;
+    static int moveSpeed = 5;
 
 }

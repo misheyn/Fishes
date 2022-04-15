@@ -201,18 +201,22 @@ public class MainController {
 
     @FXML
     void initialize() {
-        Habitat.getInstance().goldenThread = new BaseAI("Golden"){};
-        Habitat.getInstance().guppyThread = new BaseAI("Guppy"){};
-        width = (int) modelPane.getWidth();
-        height = (int) modelPane.getHeight();
         stopButton.setDisable(true);
         resultWindowCheckBox.setSelected(true);
         unshowResultWindow.setDisable(false);
         showResultWindow.setDisable(true);
-        Habitat.getInstance().goldenThread.start();
-        Habitat.getInstance().guppyThread.start();
     }
 
-    static public int width;
-    static public int height;
+
+    public void waitGoldenButtonClick(KeyEvent keyEvent) {
+    }
+
+    public void awakeGuppyButtonClick(KeyEvent keyEvent) {
+    }
+
+    public void waitGuppyButtonClick(KeyEvent keyEvent) {
+    }
+
+    public void awakeGoldenButtonClick(KeyEvent keyEvent) {
+    }
 }

@@ -215,7 +215,8 @@ public class MainController {
     public void waitGoldenButtonClick(ActionEvent keyEvent) throws InterruptedException {
         synchronized (Habitat.getInstance().goldenThread) {
 //        Habitat.getInstance().goldenThread.timerWait();
-        Habitat.getInstance().goldenThread.wait();
+//        Habitat.getInstance().goldenThread.wait();
+            Habitat.waitGolden = true;
             waitGoldenButton.setDisable(true);
             awakeGoldenButton.setDisable(false);
         }

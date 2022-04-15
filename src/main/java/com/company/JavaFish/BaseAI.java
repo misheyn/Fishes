@@ -18,7 +18,7 @@ abstract class BaseAI extends Thread {
 
     public void timerWait() throws InterruptedException {
 //        moveTimer.wait();
-        this.wait();
+        wait();
     }
 
     public void timerNotify() {

@@ -73,6 +73,13 @@ public class Habitat extends Application {
             @Override
             public void run() {
                 Platform.runLater(() -> {
+                    if (waitGolden) {
+                        try {
+                            goldenThread.wait();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                     try {
                         update(System.currentTimeMillis() - startTime);
                     } catch (IOException e) {
@@ -288,4 +295,5 @@ public class Habitat extends Application {
     public BaseAI guppyThread;
     public int width;
     public int height;
+    public static boolean waitGolden = false;
 }

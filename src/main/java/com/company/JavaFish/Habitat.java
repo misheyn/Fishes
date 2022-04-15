@@ -85,8 +85,10 @@ public class Habitat extends Application {
     }
 
     private void clearListFish() {
-        FishArr.getInstance().linkedList.forEach(tmp -> mainController.getPane().getChildren().remove(tmp.getImageView()));
-        FishArr.getInstance().linkedList.clear();
+        synchronized (FishArr.getInstance().linkedList) {
+            FishArr.getInstance().linkedList.forEach(tmp -> mainController.getPane().getChildren().remove(tmp.getImageView()));
+            FishArr.getInstance().linkedList.clear();
+        }
         FishArr.getInstance().treeMap.clear();
         FishArr.getInstance().hashSet.clear();
         FishArr.getInstance().vector.clear();
@@ -183,7 +185,9 @@ public class Habitat extends Application {
         GoldenFish fish = new GoldenFish(currentTime, random.nextInt((int) mainController.getPane().getWidth() - 200), random.nextInt((int) mainController.getPane().getHeight() - 100));
         mainController.getPane().getChildren().add(fish.getImageView());
         FishArr.getInstance().vector.add(fish);
-        FishArr.getInstance().linkedList.add(fish);
+        synchronized (FishArr.getInstance().linkedList) {
+            FishArr.getInstance().linkedList.add(fish);
+        }
         FishArr.getInstance().hashSet.add(ID);
         FishArr.getInstance().treeMap.put(ID, currentTime);
     }
@@ -194,7 +198,9 @@ public class Habitat extends Application {
         GuppyFish fish = new GuppyFish(currentTime, random.nextInt((int) mainController.getPane().getWidth() - 200), random.nextInt((int) mainController.getPane().getHeight() - 100));
         mainController.getPane().getChildren().add(fish.getImageView());
         FishArr.getInstance().vector.add(fish);
-        FishArr.getInstance().linkedList.add(fish);
+        synchronized (FishArr.getInstance().linkedList) {
+            FishArr.getInstance().linkedList.add(fish);
+        }
         FishArr.getInstance().hashSet.add(ID);
         FishArr.getInstance().treeMap.put(ID, currentTime);
     }

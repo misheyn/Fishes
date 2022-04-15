@@ -16,25 +16,41 @@ abstract class BaseAI extends Thread {
         }
     }
 
+    public void timerWait() throws InterruptedException {
+//        moveTimer.wait();
+        this.wait();
+    }
+
+    public void timerNotify() {
+        moveTimer.notify();
+    }
+
     public void run() {
-        moveTimer = new Timer();
-        moveTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                synchronized (FishArr.getInstance().linkedList) {
-                    if (!FishArr.getInstance().linkedList.isEmpty())
-                        if (flag) {
-                            FishArr.getInstance().linkedList.forEach(tmp -> {
-                                if (tmp instanceof GoldenFish) tmp.move();
-                            });
-                        } else {
-                            FishArr.getInstance().linkedList.forEach(tmp -> {
-                                if (tmp instanceof GuppyFish) tmp.move();
-                            });
-                        }
-                }
+//        moveTimer = new Timer();
+//        moveTimer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+        while (!stopFlag) {
+            synchronized (FishArr.getInstance().linkedList) {
+                if (!FishArr.getInstance().linkedList.isEmpty())
+                    if (flag) {
+                        FishArr.getInstance().linkedList.forEach(tmp -> {
+                            if (tmp instanceof GoldenFish) tmp.move();
+                        });
+                    } else {
+                        FishArr.getInstance().linkedList.forEach(tmp -> {
+                            if (tmp instanceof GuppyFish) tmp.move();
+                        });
+                    }
             }
-        }, 0, 100);
+            try {
+                sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+//            }
+//        }, 0, 100);
     }
 
     public Timer moveTimer;

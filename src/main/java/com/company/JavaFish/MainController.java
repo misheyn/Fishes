@@ -49,6 +49,16 @@ public class MainController {
     private MenuItem unshowResultWindow;
     @FXML
     private Button currentObjectsButton;
+    @FXML
+    private Button awakeGoldenButton;
+
+    @FXML
+    private Button awakeGuppyButton;
+    @FXML
+    private Button waitGoldenButton;
+
+    @FXML
+    private Button waitGuppyButton;
 
     public Pane getPane() {
         return modelPane;
@@ -200,6 +210,40 @@ public class MainController {
     }
 
     @FXML
+    public void waitGoldenButtonClick(ActionEvent keyEvent) throws InterruptedException {
+//        synchronized (Habitat.getInstance().goldenThread) {
+        Habitat.getInstance().goldenThread.timerWait();
+//        Habitat.getInstance().goldenThread.wait();
+            waitGoldenButton.setDisable(true);
+            awakeGoldenButton.setDisable(false);
+//        }
+    }
+
+    @FXML
+    public void awakeGuppyButtonClick(ActionEvent keyEvent) {
+//        Habitat.getInstance().goldenThread.timerNotify();
+//        Habitat.getInstance().guppyThread.notify();
+        awakeGuppyButton.setDisable(true);
+        waitGuppyButton.setDisable(false);
+    }
+
+    @FXML
+    public void waitGuppyButtonClick(ActionEvent keyEvent) throws InterruptedException {
+//        Habitat.getInstance().guppyThread.timerWait();
+//        Habitat.getInstance().guppyThread.wait();
+        waitGuppyButton.setDisable(true);
+        awakeGuppyButton.setDisable(false);
+    }
+
+    @FXML
+    public void awakeGoldenButtonClick(ActionEvent keyEvent) {
+//        Habitat.getInstance().guppyThread.timerNotify();
+//        Habitat.getInstance().goldenThread.notify();
+        awakeGoldenButton.setDisable(true);
+        waitGoldenButton.setDisable(false);
+    }
+
+    @FXML
     void initialize() {
         stopButton.setDisable(true);
         resultWindowCheckBox.setSelected(true);
@@ -207,16 +251,4 @@ public class MainController {
         showResultWindow.setDisable(true);
     }
 
-
-    public void waitGoldenButtonClick(KeyEvent keyEvent) {
-    }
-
-    public void awakeGuppyButtonClick(KeyEvent keyEvent) {
-    }
-
-    public void waitGuppyButtonClick(KeyEvent keyEvent) {
-    }
-
-    public void awakeGoldenButtonClick(KeyEvent keyEvent) {
-    }
 }

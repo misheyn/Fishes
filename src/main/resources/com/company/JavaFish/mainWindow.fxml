@@ -65,22 +65,22 @@
                         <Font name="System Bold Italic" size="14.0" />
                     </font>
                 </Button>
-            <Button fx:id="waitGoldenButton" layoutX="17.0" layoutY="430.0" mnemonicParsing="false" onKeyPressed="#waitGoldenButtonClick" prefHeight="30.0" prefWidth="70.0" text="Wait">
+            <Button fx:id="waitGoldenButton" layoutX="17.0" layoutY="430.0" mnemonicParsing="false" onAction="#waitGoldenButtonClick" prefHeight="30.0" prefWidth="70.0" text="Wait">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="awakeGoldenButton" layoutX="112.0" layoutY="430.0" mnemonicParsing="false" onKeyPressed="#awakeGoldenButtonClick" prefHeight="30.0" prefWidth="70.0" text="Awake">
+            <Button fx:id="awakeGoldenButton" layoutX="112.0" layoutY="430.0" mnemonicParsing="false" onAction="#awakeGoldenButtonClick" prefHeight="30.0" prefWidth="70.0" text="Awake">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="waitGuppyButton" layoutX="17.0" layoutY="495.0" mnemonicParsing="false" onKeyPressed="#waitGuppyButtonClick" prefHeight="30.0" prefWidth="70.0" text="Wait">
+            <Button fx:id="waitGuppyButton" layoutX="17.0" layoutY="495.0" mnemonicParsing="false" onAction="#waitGuppyButtonClick" prefHeight="30.0" prefWidth="70.0" text="Wait">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="awakeGuppyButton" layoutX="112.0" layoutY="495.0" mnemonicParsing="false" onKeyPressed="#awakeGuppyButtonClick" prefHeight="30.0" prefWidth="70.0" text="Awake">
+            <Button fx:id="awakeGuppyButton" layoutX="112.0" layoutY="495.0" mnemonicParsing="false" onAction="#awakeGuppyButtonClick" prefHeight="30.0" prefWidth="70.0" text="Awake">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

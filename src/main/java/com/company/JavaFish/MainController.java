@@ -194,6 +194,9 @@ public class MainController {
         resultWindowCheckBox.setSelected(true);
         unshowResultWindow.setDisable(false);
         showResultWindow.setDisable(true);
+        hideMenu.setDisable(true);
+        stopMenu.setDisable(true);
+        stopButton.setDisable(true);
     }
 
 }

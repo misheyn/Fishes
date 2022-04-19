@@ -89,7 +89,6 @@ public class Habitat extends Application {
         FishArr.getInstance().linkedList.clear();
         FishArr.getInstance().treeMap.clear();
         FishArr.getInstance().hashSet.clear();
-        FishArr.getInstance().vector.clear();
     }
 
     private void bornFishes(long currentTime, int P, int N, String fish) {
@@ -160,8 +159,8 @@ public class Habitat extends Application {
     private void showStatLabel() throws IOException {
         if (statFlag) {
             long finalTime = System.currentTimeMillis() - startTime;
-            long countGold = FishArr.getInstance().vector.stream().filter(i -> i instanceof GoldenFish).count();
-            long countGuppy = FishArr.getInstance().vector.stream().filter(i -> i instanceof GuppyFish).count();
+            long countGold = FishArr.getInstance().linkedList.stream().filter(i -> i instanceof GoldenFish).count();
+            long countGuppy = FishArr.getInstance().linkedList.stream().filter(i -> i instanceof GuppyFish).count();
             statStr = "Golden fish: " + countGold;
             statStr += "\nGuppy fish: " + countGuppy;
             statStr += "\nTime: " + finalTime / 1000;
@@ -182,7 +181,6 @@ public class Habitat extends Application {
         Integer ID = random.nextInt(100);
         GoldenFish fish = new GoldenFish(currentTime, random.nextInt((int) mainController.getPane().getWidth() - 200), random.nextInt((int) mainController.getPane().getHeight() - 100));
         mainController.getPane().getChildren().add(fish.getImageView());
-        FishArr.getInstance().vector.add(fish);
         FishArr.getInstance().linkedList.add(fish);
         FishArr.getInstance().hashSet.add(ID);
         FishArr.getInstance().treeMap.put(ID, currentTime);
@@ -193,7 +191,6 @@ public class Habitat extends Application {
         Integer ID = random.nextInt(100);
         GuppyFish fish = new GuppyFish(currentTime, random.nextInt((int) mainController.getPane().getWidth() - 200), random.nextInt((int) mainController.getPane().getHeight() - 100));
         mainController.getPane().getChildren().add(fish.getImageView());
-        FishArr.getInstance().vector.add(fish);
         FishArr.getInstance().linkedList.add(fish);
         FishArr.getInstance().hashSet.add(ID);
         FishArr.getInstance().treeMap.put(ID, currentTime);

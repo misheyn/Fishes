@@ -18,6 +18,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Habitat extends Application {
 
     public Habitat() {
+        goldenThread = new GoldenAI();
+        guppyThread = new GuppyAI();
     }
 
     @Override
@@ -45,8 +47,6 @@ public class Habitat extends Application {
         statFlag = false;
         startTime = System.currentTimeMillis();
         mainController.getStatistic().setVisible(false);
-        goldenThread.start();
-        guppyThread.start();
         startCycle();
     }
 
@@ -73,13 +73,6 @@ public class Habitat extends Application {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    if (waitGolden) {
-                        try {
-                            goldenThread.wait();
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
                     try {
                         update(System.currentTimeMillis() - startTime);
                     } catch (IOException e) {
@@ -149,7 +142,9 @@ public class Habitat extends Application {
                 foundedFish.set(tmp);
             }
         });
-        FishArr.getInstance().linkedList.remove(foundedFish.get());
+        synchronized (FishArr.getInstance().linkedList) {
+            FishArr.getInstance().linkedList.remove(foundedFish.get());
+        }
     }
 
     private void showTimeLabel() {
@@ -215,6 +210,16 @@ public class Habitat extends Application {
     public static void main(String[] args) {
         launch();
         timer.cancel();
+        try {
+            Habitat.getInstance().guppyThread.notifyThread();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            Habitat.getInstance().goldenThread.notifyThread();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         Habitat.getInstance().goldenThread.moveTimer.cancel();
         Habitat.getInstance().guppyThread.moveTimer.cancel();
         Habitat.getInstance().goldenThread.stopFlag = true;
@@ -225,10 +230,10 @@ public class Habitat extends Application {
         StartMenu.showMenu();
         timer = new Timer();
         startTime = System.currentTimeMillis();
-        goldenThread = new BaseAI("Golden") {
-        };
-        guppyThread = new BaseAI("Guppy") {
-        };
+        goldenThread.start();
+        guppyThread.start();
+//        goldenThread = new GoldenAI();
+//        guppyThread = new GuppyAI();
     }
 
     public static void setN1(int n1) {
@@ -291,9 +296,10 @@ public class Habitat extends Application {
     public static boolean startFlag = false;
     private static boolean resultWindowFlag = true;
     private static String statStr;
-    public BaseAI goldenThread;
-    public BaseAI guppyThread;
+    final public GoldenAI goldenThread;
+    final public GuppyAI guppyThread;
     public int width;
     public int height;
     public static boolean waitGolden = false;
+    public static boolean waitGuppy = false;
 }

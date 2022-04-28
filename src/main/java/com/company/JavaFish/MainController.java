@@ -2,6 +2,7 @@ package com.company.JavaFish;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -51,14 +52,14 @@ public class MainController {
     private Button currentObjectsButton;
     @FXML
     private Button awakeGoldenButton;
-
     @FXML
     private Button awakeGuppyButton;
     @FXML
     private Button waitGoldenButton;
-
     @FXML
     private Button waitGuppyButton;
+    @FXML
+    private ComboBox<String> threadPriorityComboBox;
 
     public Pane getPane() {
         return modelPane;
@@ -158,8 +159,8 @@ public class MainController {
     @FXML
     void startButtonClick(ActionEvent event) {
         if (!Habitat.startFlag) {
-//            waitGuppyButton.setDisable(false);
-//            waitGoldenButton.setDisable(false);
+            waitGuppyButton.setDisable(false);
+            waitGoldenButton.setDisable(false);
             switchButtonsOff();
             switchMenuItemOff();
             Habitat.getInstance().startAction();
@@ -172,6 +173,10 @@ public class MainController {
             switchButtonsOn();
             switchMenuItemOn();
             Habitat.getInstance().stopAction();
+            waitGoldenButton.setDisable(true);
+            awakeGoldenButton.setDisable(true);
+            waitGuppyButton.setDisable(true);
+            awakeGuppyButton.setDisable(true);
         }
     }
 
@@ -212,47 +217,71 @@ public class MainController {
     }
 
     @FXML
-    public void waitGoldenButtonClick(ActionEvent keyEvent) throws InterruptedException {
+    public void waitGoldenButtonClick(ActionEvent keyEvent) {
         synchronized (Habitat.getInstance().goldenThread) {
-//        Habitat.getInstance().goldenThread.timerWait();
-//        Habitat.getInstance().goldenThread.wait();
             Habitat.waitGolden = true;
             waitGoldenButton.setDisable(true);
             awakeGoldenButton.setDisable(false);
         }
     }
 
+    @FXML
+    public void waitGuppyButtonClick(ActionEvent keyEvent) {
+        synchronized (Habitat.getInstance().guppyThread) {
+            Habitat.waitGuppy = true;
+            waitGuppyButton.setDisable(true);
+            awakeGuppyButton.setDisable(false);
+        }
+    }
 
     @FXML
     public void awakeGuppyButtonClick(ActionEvent keyEvent) {
-//        Habitat.getInstance().goldenThread.timerNotify();
-//        Habitat.getInstance().guppyThread.notify();
+        synchronized (Habitat.getInstance().guppyThread) {
+            Habitat.waitGuppy = false;
+            try {
+                Habitat.getInstance().guppyThread.notifyThread();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         awakeGuppyButton.setDisable(true);
         waitGuppyButton.setDisable(false);
     }
 
     @FXML
-    public void waitGuppyButtonClick(ActionEvent keyEvent) throws InterruptedException {
-//        Habitat.getInstance().guppyThread.timerWait();
-//        Habitat.getInstance().guppyThread.wait();
-        waitGuppyButton.setDisable(true);
-        awakeGuppyButton.setDisable(false);
+    public void awakeGoldenButtonClick(ActionEvent keyEvent) {
+        synchronized (Habitat.getInstance().goldenThread) {
+            Habitat.waitGolden = false;
+            try {
+                Habitat.getInstance().goldenThread.notifyThread();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            awakeGoldenButton.setDisable(true);
+            waitGoldenButton.setDisable(false);
+        }
     }
 
     @FXML
-    public void awakeGoldenButtonClick(ActionEvent keyEvent) {
-//        Habitat.getInstance().guppyThread.timerNotify();
-//        Habitat.getInstance().goldenThread.notify();
-        awakeGoldenButton.setDisable(true);
-        waitGoldenButton.setDisable(false);
+    void threadPriorityComboBoxSet(ActionEvent event) {
+        if (threadPriorityComboBox.getValue().equals("GoldenThread")) {
+            Habitat.getInstance().goldenThread.setPriority(4);
+            Habitat.getInstance().guppyThread.setPriority(3);
+        }else{
+            Habitat.getInstance().guppyThread.setPriority(4);
+            Habitat.getInstance().goldenThread.setPriority(3);
+        }
     }
 
     @FXML
     void initialize() {
-//        waitGoldenButton.setDisable(true);
-//        awakeGoldenButton.setDisable(true);
-//        waitGuppyButton.setDisable(true);
-//        awakeGuppyButton.setDisable(true);
+        threadPriorityComboBox.getItems().add("GoldenThread");
+        threadPriorityComboBox.getItems().add("GuppyThread");
+        threadPriorityComboBox.getSelectionModel().select(0);
+        waitGoldenButton.setDisable(true);
+        awakeGoldenButton.setDisable(true);
+        waitGuppyButton.setDisable(true);
+        awakeGuppyButton.setDisable(true);
         stopButton.setDisable(true);
         resultWindowCheckBox.setSelected(true);
         unshowResultWindow.setDisable(false);

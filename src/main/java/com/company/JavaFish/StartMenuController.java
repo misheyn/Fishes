@@ -30,6 +30,10 @@ public class StartMenuController {
     private TextField lifetimeGoldTextField;
     @FXML
     private TextField lifetimeGuppyTextField;
+    @FXML
+    private Button getPropertiesButton;
+    @FXML
+    private Button setPropertiesButton;
 
     @FXML
     void exitMenuButtonClick(ActionEvent event) {
@@ -63,7 +67,7 @@ public class StartMenuController {
         }
         try {
             GoldenFish.lifeTime = Long.parseLong(lifetimeGoldTextField.getText());
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             alert.showAndWait();
             flag = 0;
             lifetimeGoldTextField.setText("10");
@@ -71,7 +75,7 @@ public class StartMenuController {
         }
         try {
             GuppyFish.lifeTime = Long.parseLong(lifetimeGuppyTextField.getText());
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             alert.showAndWait();
             flag = 0;
             lifetimeGuppyTextField.setText("20");
@@ -85,7 +89,62 @@ public class StartMenuController {
     }
 
     @FXML
+    void getPropertiesButtonAction(ActionEvent event) {
+        int p1, p2, n1, n2;
+        long lifeTime1, lifeTime2;
+        try {
+            p1 = Integer.parseInt(goldenFishComboBox.getValue());
+        } catch (NumberFormatException e) {
+            p1 = 40;
+        }
+        try {
+            p2 = Integer.parseInt(guppyFishComboBox.getValue());
+        } catch (NumberFormatException e) {
+            p2 = 60;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Wrong input!\nThink about it ☺", ButtonType.YES);
+        try {
+            n1 = Integer.parseInt(goldenFishTextField.getText());
+        } catch (NumberFormatException e) {
+            alert.showAndWait();
+            n1 = 5;
+            goldenFishTextField.setText("5");
+        }
+        try {
+            n2 = Integer.parseInt(guppyFishTextField.getText());
+        } catch (NumberFormatException e) {
+            alert.showAndWait();
+            guppyFishTextField.setText("2");
+            n2 = 2;
+        }
+        try {
+            lifeTime1 = Long.parseLong(lifetimeGoldTextField.getText());
+        } catch (NumberFormatException e) {
+            alert.showAndWait();
+            lifetimeGoldTextField.setText("10");
+            lifeTime1 = 10;
+        }
+        try {
+            lifeTime2 = Long.parseLong(lifetimeGuppyTextField.getText());
+        } catch (NumberFormatException e) {
+            alert.showAndWait();
+            lifetimeGuppyTextField.setText("20");
+            lifeTime2 = 20;
+        }
+        PropertiesPackage.getInstance().getProperties(n1, n2, p1, p2, lifeTime1, lifeTime2);
+        //todo send package
+    }
+
+    @FXML
+    void setPropertiesButtonAction(ActionEvent event) {
+        //todo get package
+        PropertiesPackage.getInstance().setProperties();
+    }
+
+    @FXML
     void initialize() {
+        PropertiesPackage propertiesPackage = new PropertiesPackage();
+        client = new Client();
         ArrayList<String> comboBoxTexts = new ArrayList<>();
         for (int i = 10; i <= 100; i += 10)
             comboBoxTexts.add(Integer.toString(i));
@@ -101,4 +160,5 @@ public class StartMenuController {
         lifetimeGuppyTextField.setText("20");
     }
 
+    private Client client;
 }

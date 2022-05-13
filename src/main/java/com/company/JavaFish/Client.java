@@ -2,82 +2,59 @@ package com.company.JavaFish;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
-public class Client {
-
-    public static void run() throws InterruptedException {
-
-// запускаем подключение сокета по известным координатам и нициализируем приём сообщений с консоли клиента
-        try (Socket socket = new Socket("localhost", 3345);
-             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-             DataOutputStream oos = new DataOutputStream(socket.getOutputStream());
-             DataInputStream ois = new DataInputStream(socket.getInputStream());) {
-
+public class Client extends Thread {
+    public void run() {
+        try (Socket socket = new Socket("localhost", 3345)) {
+            oos = new ObjectOutputStream(socket.getOutputStream());
+            oos.reset();
+            ois = new ObjectInputStream(socket.getInputStream());
             System.out.println("Client connected to socket.");
-            System.out.println();
-            System.out.println("Client writing channel = oos & reading channel = ois initialized.");
-
-// проверяем живой ли канал и работаем если живой
-            if (!socket.isOutputShutdown()) {
-//            while(!socket.isOutputShutdown()){
-
-// ждём консоли клиента на предмет появления в ней данных
-                if (br.ready()) {
-
-// данные появились - работаем
-                    System.out.println("Client start writing in channel...");
-                    Thread.sleep(1000);
-                    String clientCommand = br.readLine();
-
-// пишем данные с консоли в канал сокета для сервера
-                    oos.writeUTF(clientCommand);
-                    oos.flush();
-                    System.out.println("Clien sent message " + clientCommand + " to server.");
-                    Thread.sleep(1000);
-// ждём чтобы сервер успел прочесть сообщение из сокета и ответить
-
-//// проверяем условие выхода из соединения
-//                    if (clientCommand.equalsIgnoreCase("quit")) {
-//
-//// если условие выхода достигнуто разъединяемся
-//                        System.out.println("Client kill connections");
-//                        Thread.sleep(2000);
-//
-//// смотрим что нам ответил сервер на последок перед закрытием ресурсов
-//                        if (ois.read() > -1) {
-//                            System.out.println("reading...");
-//                            String in = ois.readUTF();
-//                            System.out.println(in);
-//                        }
-//
-//// после предварительных приготовлений выходим из цикла записи чтения
-//                        break;
-//                    }
-
-// если условие разъединения не достигнуто продолжаем работу
-                    System.out.println("Client sent message & start waiting for data from server...");
-                    Thread.sleep(2000);
-
-// проверяем, что нам ответит сервер на сообщение(за предоставленное ему время в паузе он должен был успеть ответить)
-                    if (ois.read() > -1) {
-
-// если успел забираем ответ из канала сервера в сокете и сохраняем её в ois переменную,  печатаем на свою клиентскую консоль
-                        System.out.println("reading...");
-                        String in = ois.readUTF();
-                        System.out.println(in);
-                    }
-                }
+            Habitat.getInstance().clientCount = Integer.parseInt(ois.readUTF());
+            while (!socket.isClosed() && !closeFlag) {
+                Thread.sleep(100);
             }
-// на выходе из цикла общения закрываем свои ресурсы
-            System.out.println("Closing connections & channels on clentSide - DONE.");
+            socket.close();
+            oos.close();
+            ois.close();
 
-        } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
+
+    public void sendProperties(PropertiesPackage propertiesPackage) throws IOException {
+        oos.writeUTF("set");
+        oos.reset();
+        oos.writeObject(propertiesPackage);
+        oos.reset();
+    }
+
+    public void getProperties(PropertiesPackage propertiesPackage) throws IOException, ClassNotFoundException, InterruptedException {
+        oos.writeUTF("get");
+        oos.reset();
+        propertiesPackage.print();
+        PropertiesPackage tmp = (PropertiesPackage) ois.readObject();
+        propertiesPackage.copyProperties(tmp);
+    }
+
+    public void quit() throws IOException {
+        oos.writeUTF("quit");
+        oos.reset();
+        closeFlag = true;
+        System.out.println("Closing connections & channels on clentSide - DONE.");
+
+    }
+
+    public void getClientCount() throws IOException {
+        oos.writeUTF("getClientCount");
+        oos.reset();
+        Habitat.getInstance().clientCount = Integer.parseInt(ois.readUTF());
+    }
+
+    private boolean closeFlag = false;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
 }

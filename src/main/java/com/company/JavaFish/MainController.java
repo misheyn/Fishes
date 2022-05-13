@@ -2,7 +2,6 @@ package com.company.JavaFish;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -19,7 +18,7 @@ public class MainController {
     @FXML
     private URL location;
     @FXML
-    private Label label;
+    private Label timerLabel;
     @FXML
     private Label statistic;
     @FXML
@@ -59,6 +58,8 @@ public class MainController {
     @FXML
     private Button waitGuppyButton;
     @FXML
+    private Label clientCountLabel;
+    @FXML
     private ComboBox<String> threadPriorityComboBox;
 
     public Pane getPane() {
@@ -69,8 +70,12 @@ public class MainController {
         return statistic;
     }
 
-    public void printLabel(String str) {
-        label.setText(str);
+    public void printTimerLabel(String str) {
+        timerLabel.setText(str);
+    }
+
+    public void printClientCountLabel(int count) {
+        clientCountLabel.setText("Client count " + count);
     }
 
     public void printStatistic(String str) {
@@ -267,7 +272,7 @@ public class MainController {
         if (threadPriorityComboBox.getValue().equals("GoldenThread")) {
             Habitat.getInstance().goldenThread.setPriority(4);
             Habitat.getInstance().guppyThread.setPriority(3);
-        }else{
+        } else {
             Habitat.getInstance().guppyThread.setPriority(4);
             Habitat.getInstance().goldenThread.setPriority(3);
         }
@@ -275,6 +280,7 @@ public class MainController {
 
     @FXML
     void initialize() {
+        clientCountLabel.setText("Client count " + Habitat.getInstance().clientCount);
         threadPriorityComboBox.getItems().add("GoldenThread");
         threadPriorityComboBox.getItems().add("GuppyThread");
         threadPriorityComboBox.getSelectionModel().select(0);

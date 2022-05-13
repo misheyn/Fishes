@@ -13,5 +13,4 @@ abstract class BaseAI extends Thread {
     }
 
     public Timer moveTimer;
-    public boolean stopFlag = false;
 }

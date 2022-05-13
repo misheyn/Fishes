@@ -32,11 +32,11 @@ public class Habitat extends Application {
         BackgroundImage bImg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         Background bGround = new Background(bImg);
         mainController.getPane().setBackground(bGround);
-        initialize();
         mainController.getStatistic().setVisible(true);
         stage.setTitle("Aquarium fishes");
         stage.setScene(root);
         stage.getIcons().add(new Image(new FileInputStream("src/image/fill.png")));
+        initialize();
         width = 900;
         height = 750;
         stage.show();
@@ -124,6 +124,8 @@ public class Habitat extends Application {
             showTimeLabel();
             clearDeadFish(currentTime);
         }
+        client.getClientCount();
+        mainController.printClientCountLabel(clientCount);
     }
 
     private void clearDeadFish(long currentTime) {
@@ -158,7 +160,7 @@ public class Habitat extends Application {
                 timeStr = "0";
             }
         }
-        mainController.printLabel(timeStr);
+        mainController.printTimerLabel(timeStr);
     }
 
     private void showStatLabel() throws IOException {
@@ -207,7 +209,7 @@ public class Habitat extends Application {
         FishArr.getInstance().treeMap.put(ID, currentTime);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         launch();
         timer.cancel();
         try {
@@ -220,36 +222,20 @@ public class Habitat extends Application {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        client.quit();
         Habitat.getInstance().goldenThread.moveTimer.cancel();
         Habitat.getInstance().guppyThread.moveTimer.cancel();
-        Habitat.getInstance().goldenThread.stopFlag = true;
-        Habitat.getInstance().guppyThread.stopFlag = true;
     }
 
     private void initialize() throws IOException {
+        client = new Client();
+        client.start();
         StartMenu.showMenu();
+        mainController.printClientCountLabel(clientCount);
         timer = new Timer();
         startTime = System.currentTimeMillis();
         goldenThread.start();
         guppyThread.start();
-//        goldenThread = new GoldenAI();
-//        guppyThread = new GuppyAI();
-    }
-
-    public static void setN1(int n1) {
-        N1 = n1;
-    }
-
-    public static void setN2(int n2) {
-        N2 = n2;
-    }
-
-    public static void setP1(int p1) {
-        P1 = p1;
-    }
-
-    public static void setP2(int p2) {
-        P2 = p2;
     }
 
     public static void setResultWindowFlag() {
@@ -291,8 +277,8 @@ public class Habitat extends Application {
     public boolean timeFlag = false;
     private boolean statFlag = false;
     public long startTime;
-    private static int P1, P2;
-    private static int N1, N2;
+    public static int P1, P2;
+    public static int N1, N2;
     public static boolean startFlag = false;
     private static boolean resultWindowFlag = true;
     private static String statStr;
@@ -302,4 +288,6 @@ public class Habitat extends Application {
     public int height;
     public static boolean waitGolden = false;
     public static boolean waitGuppy = false;
+    public static Client client;
+    public int clientCount = 1;
 }

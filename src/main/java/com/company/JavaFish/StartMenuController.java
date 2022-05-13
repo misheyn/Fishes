@@ -1,5 +1,6 @@
 package com.company.JavaFish;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -39,31 +40,31 @@ public class StartMenuController {
     void exitMenuButtonClick(ActionEvent event) {
         int flag = 1;
         try {
-            Habitat.setP1(Integer.parseInt(goldenFishComboBox.getValue()));
+            Habitat.P1 = Integer.parseInt(goldenFishComboBox.getValue());
         } catch (NumberFormatException e) {
-            Habitat.setP1(40);
+            Habitat.P1 = 40;
         }
         try {
-            Habitat.setP2(Integer.parseInt(guppyFishComboBox.getValue()));
+            Habitat.P2 = Integer.parseInt(guppyFishComboBox.getValue());
         } catch (NumberFormatException e) {
-            Habitat.setP2(60);
+            Habitat.P2 = 60;
         }
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Wrong input!\nThink about it ☺", ButtonType.YES);
         try {
-            Habitat.setN1(Integer.parseInt(goldenFishTextField.getText()));
+            Habitat.N1 = Integer.parseInt(goldenFishTextField.getText());
         } catch (NumberFormatException e) {
             alert.showAndWait();
             flag = 0;
-            Habitat.setN1(5);
+            Habitat.N1 = 5;
             goldenFishTextField.setText("5");
         }
         try {
-            Habitat.setN2(Integer.parseInt(guppyFishTextField.getText()));
+            Habitat.N2 = Integer.parseInt(guppyFishTextField.getText());
         } catch (NumberFormatException e) {
             alert.showAndWait();
             flag = 0;
             guppyFishTextField.setText("2");
-            Habitat.setN2(2);
+            Habitat.N2 = 2;
         }
         try {
             GoldenFish.lifeTime = Long.parseLong(lifetimeGoldTextField.getText());
@@ -89,7 +90,25 @@ public class StartMenuController {
     }
 
     @FXML
-    void getPropertiesButtonAction(ActionEvent event) {
+    void getPropertiesButtonAction(ActionEvent event) throws IOException, ClassNotFoundException, InterruptedException {
+        Habitat.getInstance().client.getProperties(propertiesPackage);
+        Habitat.N1 = propertiesPackage.N1;
+        Habitat.N2 = propertiesPackage.N2;
+        Habitat.P1 = propertiesPackage.P1;
+        Habitat.P2 = propertiesPackage.P2;
+        GoldenFish.lifeTime = propertiesPackage.goldenLifeTime;
+        GuppyFish.lifeTime = propertiesPackage.guppyLifeTime;
+        //todo set data for view
+        goldenFishComboBox.getSelectionModel().select(Habitat.P1 / 10 - 1);
+        guppyFishComboBox.getSelectionModel().select(Habitat.P2 / 10 - 1);
+        goldenFishTextField.setText(Integer.toString(Habitat.N1));
+        guppyFishTextField.setText(Integer.toString(Habitat.N2));
+        lifetimeGoldTextField.setText(Long.toString(GoldenFish.lifeTime));
+        lifetimeGuppyTextField.setText(Long.toString(GuppyFish.lifeTime));
+    }
+
+    @FXML
+    void setPropertiesButtonAction(ActionEvent event) throws IOException {
         int p1, p2, n1, n2;
         long lifeTime1, lifeTime2;
         try {
@@ -131,20 +150,13 @@ public class StartMenuController {
             lifetimeGuppyTextField.setText("20");
             lifeTime2 = 20;
         }
-        PropertiesPackage.getInstance().getProperties(n1, n2, p1, p2, lifeTime1, lifeTime2);
-        //todo send package
-    }
-
-    @FXML
-    void setPropertiesButtonAction(ActionEvent event) {
-        //todo get package
-        PropertiesPackage.getInstance().setProperties();
+        propertiesPackage.getProperties(n1, n2, p1, p2, lifeTime1, lifeTime2);
+        Habitat.getInstance().client.sendProperties(propertiesPackage);
     }
 
     @FXML
     void initialize() {
-        PropertiesPackage propertiesPackage = new PropertiesPackage();
-        client = new Client();
+        propertiesPackage = new PropertiesPackage();
         ArrayList<String> comboBoxTexts = new ArrayList<>();
         for (int i = 10; i <= 100; i += 10)
             comboBoxTexts.add(Integer.toString(i));
@@ -160,5 +172,5 @@ public class StartMenuController {
         lifetimeGuppyTextField.setText("20");
     }
 
-    private Client client;
+    private PropertiesPackage propertiesPackage;
 }

@@ -1,6 +1,9 @@
 package com.company.JavaFish;
 
-public class PropertiesPackage {
+import java.io.Serializable;
+
+public class PropertiesPackage implements Serializable {
+
     public String toString() {
         return Integer.toString(N1) + Integer.toString(P1) + Long.toString(goldenLifeTime) +
                 Integer.toString(N2) + Integer.toString(P2) + Long.toString(guppyLifeTime);
@@ -14,32 +17,19 @@ public class PropertiesPackage {
         goldenLifeTime = lifeTime1;
         guppyLifeTime = lifeTime2;
     }
-
-    public void setProperties() {
-        Habitat.setN1(N1);
-        Habitat.setN2(N2);
-        Habitat.setP1(P1);
-        Habitat.setP2(P2);
-        GoldenFish.lifeTime = goldenLifeTime;
-        GuppyFish.lifeTime = guppyLifeTime;
+    public void print(){
+        System.out.println("Now " + N1 + " "+ N2 + " "+ P1 + " "+ P2 + " "+ goldenLifeTime + " "+ guppyLifeTime + " ");
     }
-
-    public static PropertiesPackage getInstance() {
-        PropertiesPackage localInstance = instance;
-        if (localInstance == null) {
-            synchronized (PropertiesPackage.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new PropertiesPackage();
-                }
-            }
-        }
-        return localInstance;
+    public void copyProperties(PropertiesPackage tmp) {
+        N1 = tmp.N1;
+        N2 = tmp.N2;
+        P1 = tmp.P1;
+        P2 = tmp.P2;
+        goldenLifeTime = tmp.goldenLifeTime;
+        guppyLifeTime = tmp.guppyLifeTime;
     }
-
-    private static volatile PropertiesPackage instance;
 
     long goldenLifeTime, guppyLifeTime;
-    int N1, N2;
-    int P1, P2;
+    public int N1, N2;
+    public int P1, P2;
 }

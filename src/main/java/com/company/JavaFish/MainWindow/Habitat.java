@@ -1,5 +1,14 @@
-package com.company.JavaFish;
+package com.company.JavaFish.MainWindow;
 
+import com.company.JavaFish.Client;
+import com.company.JavaFish.Models.Fish;
+import com.company.JavaFish.Models.FishArr;
+import com.company.JavaFish.Models.GoldenFish;
+import com.company.JavaFish.Models.GuppyFish;
+import com.company.JavaFish.ResultWindow.ResultWindow;
+import com.company.JavaFish.StartWindow.StartMenu;
+import com.company.JavaFish.ThreadsAI.GoldenAI;
+import com.company.JavaFish.ThreadsAI.GuppyAI;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

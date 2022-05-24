@@ -1,5 +1,6 @@
-package com.company.JavaFish;
+package com.company.JavaFish.ResultWindow;
 
+import com.company.JavaFish.StartWindow.StartMenu;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -16,7 +17,7 @@ public class ResultWindow {
         getInstance().showStartMenuFlag = false;
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
-        FXMLLoader fxmlLoader = new FXMLLoader(StartMenu.class.getResource("resultWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ResultWindow.class.getResource("resultWindow.fxml"));
         fxmlLoader.getRoot();
         Scene root = new Scene(fxmlLoader.load());
         window.setScene(root);

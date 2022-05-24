@@ -1,4 +1,4 @@
-package com.company.JavaFish;
+package com.company.JavaFish.ThreadsAI;
 
 import java.util.Timer;
 

@@ -29,7 +29,8 @@ public class PropertiesPackage implements Serializable {
         guppyLifeTime = tmp.guppyLifeTime;
     }
 
-    long goldenLifeTime, guppyLifeTime;
+    public long goldenLifeTime;
+    public long guppyLifeTime;
     public int N1, N2;
     public int P1, P2;
 }

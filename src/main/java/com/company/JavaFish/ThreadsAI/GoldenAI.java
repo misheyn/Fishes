@@ -1,4 +1,8 @@
-package com.company.JavaFish;
+package com.company.JavaFish.ThreadsAI;
+
+import com.company.JavaFish.MainWindow.Habitat;
+import com.company.JavaFish.Models.FishArr;
+import com.company.JavaFish.Models.GoldenFish;
 
 import java.util.Timer;
 import java.util.TimerTask;

@@ -1,5 +1,7 @@
 package com.company.JavaFish;
 
+import com.company.JavaFish.MainWindow.Habitat;
+
 import java.io.*;
 import java.net.Socket;
 

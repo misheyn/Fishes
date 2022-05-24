@@ -1,9 +1,10 @@
-package com.company.JavaFish;
+package com.company.JavaFish.ResultWindow;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.company.JavaFish.MainWindow.Habitat;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

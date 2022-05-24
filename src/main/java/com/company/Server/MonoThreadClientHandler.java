@@ -7,15 +7,14 @@ import java.net.Socket;
 
 public class MonoThreadClientHandler extends Thread {
 
-    private static Socket clientDialogStatic;
+    private Socket clientDialog;
 
     public MonoThreadClientHandler(Socket client) {
-        MonoThreadClientHandler.clientDialogStatic = client;
+        clientDialog = client;
     }
 
     @Override
     public void run() {
-        Socket clientDialog = clientDialogStatic;
         try {
             ObjectInputStream ois = new ObjectInputStream(clientDialog.getInputStream());
             ObjectOutputStream oos = new ObjectOutputStream(clientDialog.getOutputStream());

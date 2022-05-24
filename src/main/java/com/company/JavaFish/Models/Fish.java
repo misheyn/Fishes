@@ -1,4 +1,4 @@
-package com.company.JavaFish;
+package com.company.JavaFish.Models;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-abstract class Fish implements IBehaviour{
+public abstract class Fish implements IBehaviour {
     public Fish(long _burstTime, int _x, int _y, String path) throws FileNotFoundException {
         birthTime = _burstTime;
         x = _x;

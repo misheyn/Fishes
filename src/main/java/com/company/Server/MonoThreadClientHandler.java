@@ -5,12 +5,12 @@ import com.company.JavaFish.PropertiesPackage;
 import java.io.*;
 import java.net.Socket;
 
-public class MonoThreadClientHandler implements Runnable {
+public class MonoThreadClientHandler extends Thread {
 
-    private static Socket clientDialog;
+    private Socket clientDialog;
 
     public MonoThreadClientHandler(Socket client) {
-        MonoThreadClientHandler.clientDialog = client;
+        clientDialog = client;
     }
 
     @Override
@@ -23,8 +23,8 @@ public class MonoThreadClientHandler implements Runnable {
                 oos.writeUTF(Integer.toString(MultiThreadServer.clientCount));
                 oos.reset();
             }
-            while (!clientDialog.isClosed()) {
-                System.out.println("Server reading from channel");
+            while (!clientDialog.isClosed() && !clientDialog.isOutputShutdown() && !clientDialog.isOutputShutdown()) {
+                System.out.println("Server reading from channel " + getId());
                 String entry = ois.readUTF();
                 System.out.println("READ from clientDialog message - " + entry);
 
@@ -47,14 +47,13 @@ public class MonoThreadClientHandler implements Runnable {
                 }
             }
             MultiThreadServer.clientCount--;
-            System.out.println("Client disconnected");
+            System.out.println("Client disconnected " + clientDialog.getInetAddress() + " " + getId());
 
             ois.close();
             oos.close();
 
             clientDialog.close();
 
-            System.out.println("Closing connections & channels - DONE.");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

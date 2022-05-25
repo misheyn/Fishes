@@ -1,5 +1,7 @@
 package com.company.JavaFish;
 
+import com.company.JavaFish.MainWindow.Habitat;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -9,49 +11,55 @@ public class Client extends Thread {
             oos = new ObjectOutputStream(socket.getOutputStream());
             oos.reset();
             ois = new ObjectInputStream(socket.getInputStream());
-            System.out.println("Client connected to socket.");
+            System.out.println("Client connected to socket. ");
             Habitat.getInstance().clientCount = Integer.parseInt(ois.readUTF());
             while (!socket.isClosed() && !closeFlag) {
                 Thread.sleep(100);
             }
-            socket.close();
-            oos.close();
+            if (!socket.isClosed()) socket.close();
             ois.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        closeFlag = true;
     }
 
     public void sendProperties(PropertiesPackage propertiesPackage) throws IOException {
-        oos.writeUTF("set");
-        oos.reset();
-        oos.writeObject(propertiesPackage);
-        oos.reset();
+        if (!closeFlag) {
+            oos.writeUTF("set");
+            oos.reset();
+            oos.writeObject(propertiesPackage);
+            oos.reset();
+        }
     }
 
     public void getProperties(PropertiesPackage propertiesPackage) throws IOException, ClassNotFoundException, InterruptedException {
-        oos.writeUTF("get");
-        oos.reset();
-        propertiesPackage.print();
-        PropertiesPackage tmp = (PropertiesPackage) ois.readObject();
-        propertiesPackage.copyProperties(tmp);
+        if (!closeFlag) {
+            oos.writeUTF("get");
+            oos.reset();
+            propertiesPackage.print();
+            PropertiesPackage tmp = (PropertiesPackage) ois.readObject();
+            propertiesPackage.copyProperties(tmp);
+        }
     }
 
     public void quit() throws IOException {
-        oos.writeUTF("quit");
-        oos.reset();
-        closeFlag = true;
-        System.out.println("Closing connections & channels on clentSide - DONE.");
-
+        if (!closeFlag) {
+            oos.writeUTF("quit");
+            oos.close();
+            closeFlag = true;
+            System.out.println("Closing connections & channels on clentSide - DONE.");
+        }
     }
 
     public void getClientCount() throws IOException {
-        oos.writeUTF("getClientCount");
-        oos.reset();
-        Habitat.getInstance().clientCount = Integer.parseInt(ois.readUTF());
+        if (!closeFlag) {
+            oos.writeUTF("getClientCount");
+            oos.reset();
+            Habitat.getInstance().clientCount = Integer.parseInt(ois.readUTF());
+        }
     }
 
     private boolean closeFlag = false;

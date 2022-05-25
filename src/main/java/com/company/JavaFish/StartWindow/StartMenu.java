@@ -1,4 +1,4 @@
-package com.company.JavaFish;
+package com.company.JavaFish.StartWindow;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

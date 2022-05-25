@@ -1,13 +1,15 @@
-package com.company.JavaFish;
+package com.company.JavaFish.FishLogWindow;
 
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.company.JavaFish.Models.FishArr;
+import com.company.JavaFish.Models.GoldenFish;
+import com.company.JavaFish.Models.GuppyFish;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 
 public class FishLogWindowController {
 

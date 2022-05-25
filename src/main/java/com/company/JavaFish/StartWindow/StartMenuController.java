@@ -1,10 +1,14 @@
-package com.company.JavaFish;
+package com.company.JavaFish.StartWindow;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import com.company.JavaFish.Models.GoldenFish;
+import com.company.JavaFish.Models.GuppyFish;
+import com.company.JavaFish.MainWindow.Habitat;
+import com.company.JavaFish.PropertiesPackage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

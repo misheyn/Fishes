@@ -1,4 +1,6 @@
-package com.company.JavaFish;
+package com.company.JavaFish.Models;
+
+import com.company.JavaFish.MainWindow.Habitat;
 
 import java.io.FileNotFoundException;
 
@@ -32,7 +34,7 @@ public class GoldenFish extends Fish {
         return lifeTime;
     }
 
-    static long lifeTime;
+    public static long lifeTime;
     static int moveSpeed = 5;
 
 }

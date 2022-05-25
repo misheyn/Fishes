@@ -1,5 +1,6 @@
-package com.company.JavaFish;
+package com.company.JavaFish.FishLogWindow;
 
+import com.company.JavaFish.StartWindow.StartMenu;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -16,7 +17,7 @@ public class FishLogWindow {
         getInstance().startTime = System.currentTimeMillis();
         window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
-        FXMLLoader fxmlLoader = new FXMLLoader(StartMenu.class.getResource("fishLogWindow.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(FishLogWindow.class.getResource("fishLogWindow.fxml"));
         fxmlLoader.getRoot();
         Scene root = new Scene(fxmlLoader.load());
         window.setScene(root);

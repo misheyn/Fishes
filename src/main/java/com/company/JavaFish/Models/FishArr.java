@@ -1,4 +1,4 @@
-package com.company.JavaFish;
+package com.company.JavaFish.Models;
 
 import java.util.HashSet;
 import java.util.LinkedList;

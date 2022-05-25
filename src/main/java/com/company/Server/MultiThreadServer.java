@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import com.company.JavaFish.PropertiesPackage;
 
 
@@ -24,12 +25,14 @@ public class MultiThreadServer {
             System.out.println("Server socket created, command console reader for listen to server commands");
             while (!server.isClosed()) {
                 Socket client = server.accept();
-                executeIt.execute(new MonoThreadClientHandler(client));
-                System.out.println("Connection accepted.");
+                MonoThreadClientHandler clientThread = new MonoThreadClientHandler(client);
+                clientThread.start();
+                System.out.println("Connection accepted." + client.getInetAddress());
                 clientCount++;
             }
             executeIt.shutdown();
         } catch (IOException e) {
+
             e.printStackTrace();
         }
     }

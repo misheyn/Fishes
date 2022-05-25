@@ -41,7 +41,6 @@ public class Habitat extends Application {
         BackgroundImage bImg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         Background bGround = new Background(bImg);
         mainController.getPane().setBackground(bGround);
-        mainController.getStatistic().setVisible(true);
         stage.setTitle("Aquarium fishes");
         stage.setScene(root);
         stage.getIcons().add(new Image(new FileInputStream("src/image/fill.png")));
@@ -55,7 +54,6 @@ public class Habitat extends Application {
         startFlag = true;
         statFlag = false;
         startTime = System.currentTimeMillis();
-        mainController.getStatistic().setVisible(false);
         startCycle();
     }
 
@@ -162,12 +160,15 @@ public class Habitat extends Application {
         String timeStr = "";
 
         if (timeFlag) {
+            mainController.getTimerLabel().setVisible(true);
             if (startTime != 0) {
                 long time = System.currentTimeMillis() - startTime;
                 timeStr = "Time: " + time / 1000;
             } else {
                 timeStr = "0";
             }
+        } else {
+            mainController.getTimerLabel().setVisible(false);
         }
         mainController.printTimerLabel(timeStr);
     }

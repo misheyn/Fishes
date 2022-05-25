@@ -71,6 +71,10 @@ public class MainController {
         return statistic;
     }
 
+    public Label getTimerLabel() {
+        return timerLabel;
+    }
+
     public void printTimerLabel(String str) {
         timerLabel.setText(str);
     }
@@ -293,6 +297,8 @@ public class MainController {
         resultWindowCheckBox.setSelected(true);
         unshowResultWindow.setDisable(false);
         showResultWindow.setDisable(true);
+        timerLabel.setVisible(false);
+        statistic.setVisible(false);
     }
 
 }

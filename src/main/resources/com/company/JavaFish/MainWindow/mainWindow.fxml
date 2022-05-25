@@ -13,22 +13,22 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyPressed="#keyPressed" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.JavaFish.MainWindow.MainController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyPressed="#keyPressed" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.JavaFish.MainWindow.MainController">
     <children>
         <Pane fx:id="modelPane" disable="true" prefHeight="750.0" prefWidth="900.0" />
         <Pane prefHeight="750.0" prefWidth="900.0">
             <children>
-            <Label fx:id="clientCountLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="554.0" layoutY="14.0" prefHeight="59.0" prefWidth="171.0" textAlignment="CENTER" textFill="#ffc600">
+            <Label fx:id="clientCountLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="558.0" layoutY="26.0" prefHeight="59.0" prefWidth="171.0" textAlignment="CENTER" textFill="#ffc600">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font>
             </Label>
-                <Label fx:id="timerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="729.0" layoutY="14.0" prefHeight="59.0" prefWidth="171.0" textAlignment="CENTER" textFill="#ffc600">
+                <Label fx:id="timerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="730.0" layoutY="25.0" prefHeight="59.0" prefWidth="171.0" style="-fx-background-color: #f0f8ff;" textAlignment="CENTER" textFill="#ffc600">
                     <font>
                         <Font name="System Bold Italic" size="24.0" />
                     </font>
                 </Label>
-                <Label fx:id="statistic" alignment="TOP_CENTER" layoutX="346.0" layoutY="255.0" prefHeight="104.0" prefWidth="208.0" textAlignment="CENTER">
+                <Label fx:id="statistic" alignment="CENTER" contentDisplay="CENTER" layoutX="343.0" layoutY="297.0" prefHeight="156.0" prefWidth="275.0" style="-fx-background-color: #f0f8ff;" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold Italic" size="22.0" />
                     </font>
@@ -73,25 +73,25 @@
                 </Button>
             <Button fx:id="waitGoldenButton" layoutX="17.0" layoutY="430.0" mnemonicParsing="false" onAction="#waitGoldenButtonClick" prefHeight="30.0" prefWidth="70.0" text="Wait">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="12.0" />
                </font>
             </Button>
             <Button fx:id="awakeGoldenButton" layoutX="112.0" layoutY="430.0" mnemonicParsing="false" onAction="#awakeGoldenButtonClick" prefHeight="30.0" prefWidth="70.0" text="Awake">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="12.0" />
                </font>
             </Button>
             <Button fx:id="waitGuppyButton" layoutX="17.0" layoutY="495.0" mnemonicParsing="false" onAction="#waitGuppyButtonClick" prefHeight="30.0" prefWidth="70.0" text="Wait">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="12.0" />
                </font>
             </Button>
             <Button fx:id="awakeGuppyButton" layoutX="112.0" layoutY="495.0" mnemonicParsing="false" onAction="#awakeGuppyButtonClick" prefHeight="30.0" prefWidth="70.0" text="Awake">
                <font>
-                  <Font name="System Bold" size="14.0" />
+                  <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Label layoutX="25.0" layoutY="405.0" text="Intelligence of a goldfish">
+            <Label layoutX="13.0" layoutY="403.0" text="Intelligence of a goldfish">
                <font>
                   <Font name="System Italic" size="14.0" />
                </font>
@@ -101,9 +101,9 @@
                   <Font name="System Italic" size="14.0" />
                </font>
             </Label>
-            <ComboBox fx:id="threadPriorityComboBox" layoutX="24.0" layoutY="548.0" onAction="#threadPriorityComboBoxSet" prefWidth="150.0" />
+            <ComboBox fx:id="threadPriorityComboBox" layoutX="14.0" layoutY="547.0" onAction="#threadPriorityComboBoxSet" prefHeight="24.0" prefWidth="171.0" />
             </children></Pane>
-        <MenuBar prefHeight="26.0" prefWidth="279.0">
+        <MenuBar prefHeight="27.0" prefWidth="900.0">
             <menus>
                 <Menu mnemonicParsing="false" text="Control">
                     <items>

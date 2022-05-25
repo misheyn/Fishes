@@ -38,7 +38,11 @@ public class StartMenuController {
     @FXML
     private Button getPropertiesButton;
     @FXML
-    private Button setPropertiesButton;
+    private TextField IPTextField;
+    @FXML
+    private ComboBox<String> clientComboBox;
+    @FXML
+    private TextField loginTextField;
 
     @FXML
     void exitMenuButtonClick(ActionEvent event) {
@@ -174,6 +178,8 @@ public class StartMenuController {
         startMenu.setGraphic(null);
         lifetimeGoldTextField.setText("10");
         lifetimeGuppyTextField.setText("20");
+        getPropertiesButton.setDisable(true);
+        clientComboBox.setDisable(true);
     }
 
     private PropertiesPackage propertiesPackage;

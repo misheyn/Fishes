@@ -19,32 +19,64 @@ public class MonoThreadClientHandler extends Thread {
             ObjectInputStream ois = new ObjectInputStream(clientDialog.getInputStream());
             ObjectOutputStream oos = new ObjectOutputStream(clientDialog.getOutputStream());
             oos.reset();
-            synchronized (MultiThreadServer.clientCount) {
-                oos.writeUTF(Integer.toString(MultiThreadServer.clientCount));
-                oos.reset();
-            }
-            while (!clientDialog.isClosed() && !clientDialog.isOutputShutdown() && !clientDialog.isOutputShutdown()) {
-                System.out.println("Server reading from channel " + getId());
-                String entry = ois.readUTF();
-                System.out.println("READ from clientDialog message - " + entry);
+//            synchronized (MultiThreadServer.clientCount) {
+//                oos.writeUTF(Integer.toString(MultiThreadServer.clientCount));
+//                oos.reset();
+//            }
+            String clientName = ois.readUTF();
+            System.out.println("Connected " + clientName);
+            label:
+            while (!clientDialog.isClosed()  && !clientDialog.isOutputShutdown() && !clientDialog.isOutputShutdown()) {
+                    System.out.println("Server reading from channel " + getId());
+                    String entry = ois.readUTF();
+                    System.out.println("READ from clientDialog message - " + entry);
 
-                if (entry.equalsIgnoreCase("get")) {
-                    System.out.println("Send properties");
-                    System.out.println("Sent " + MultiThreadServer.propertiesPackage.N1 + " " + MultiThreadServer.propertiesPackage.N2 + " " + MultiThreadServer.propertiesPackage.P1 + " " + MultiThreadServer.propertiesPackage.P2);
-                    oos.writeObject(MultiThreadServer.propertiesPackage);
-                    oos.reset();
-                } else if (entry.equalsIgnoreCase("set")) {
-                    System.out.println("Get properties");
-                    MultiThreadServer.propertiesPackage.print();
-                    PropertiesPackage tmp = (PropertiesPackage) ois.readObject();
-                    MultiThreadServer.propertiesPackage.copyProperties(tmp);
-                    System.out.println("Got: " + tmp.N1 + " " + tmp.N2 + " " + tmp.P1 + " " + tmp.P2);
-                } else if (entry.equalsIgnoreCase("getClientCount")) {
-                    oos.writeUTF(Integer.toString(MultiThreadServer.clientCount));
-                    oos.reset();
-                } else if (entry.equalsIgnoreCase("quit")) {
-                    break;
-                }
+                    switch (entry) {
+                        case "get":
+                            String name = ois.readUTF();
+                            synchronized (MultiThreadServer.clientsMap) {
+                                MultiThreadServer.clientsMap.forEach((login, propertiesPackage) -> {
+                                    if (login.equals(name)) {
+                                        try {
+                                            oos.writeObject(propertiesPackage);
+                                            oos.reset();
+                                        } catch (IOException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    }
+                                });
+                            }
+                            System.out.println("Sent properties");
+                            break;
+                        case "set":
+                            synchronized (MultiThreadServer.clientsMap) {
+                                PropertiesPackage tmp = (PropertiesPackage) ois.readObject();
+                                MultiThreadServer.clientsMap.put(clientName, tmp);
+                            }
+                            System.out.println("Got properties");
+                            break;
+                        case "getClientCount":
+                            oos.writeUTF(Integer.toString(MultiThreadServer.clientCount));
+                            oos.reset();
+                            break;
+                        case "getClientList":
+                            oos.writeUTF(Integer.toString(MultiThreadServer.clientCount));
+                            oos.reset();
+                            synchronized (MultiThreadServer.clientsMap) {
+                                MultiThreadServer.clientsMap.forEach((login, tmp) -> {
+                                    try {
+                                        oos.writeUTF(login);
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
+                            }
+                            oos.reset();
+                            break;
+                        case "quit":
+                            break label;
+                    }
+                Thread.sleep(100);
             }
             MultiThreadServer.clientCount--;
             System.out.println("Client disconnected " + clientDialog.getInetAddress() + " " + getId());
@@ -57,6 +89,8 @@ public class MonoThreadClientHandler extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

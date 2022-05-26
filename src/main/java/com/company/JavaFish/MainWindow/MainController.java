@@ -83,6 +83,10 @@ public class MainController {
         clientCountLabel.setText("Client count " + count);
     }
 
+    public void hideClientCountLabel() {
+        clientCountLabel.setText("");
+    }
+
     public void printStatistic(String str) {
         statistic.setText(str);
     }
@@ -285,7 +289,7 @@ public class MainController {
 
     @FXML
     void initialize() {
-        clientCountLabel.setText("Client count " + Habitat.getInstance().clientCount);
+//        clientCountLabel.setText("Client count " + Habitat.getInstance().clientCount);
         threadPriorityComboBox.getItems().add("GoldenThread");
         threadPriorityComboBox.getItems().add("GuppyThread");
         threadPriorityComboBox.getSelectionModel().select(0);

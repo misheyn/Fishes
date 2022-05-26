@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,6 +19,7 @@ public class MultiThreadServer {
 
 
     public static void main(String[] args) {
+        clientsMap = new HashMap<String, PropertiesPackage>();
         clientCount = 0;
         propertiesPackage = new PropertiesPackage();
         propertiesPackage.getProperties(5, 2, 40, 60, 10, 20);
@@ -39,4 +42,5 @@ public class MultiThreadServer {
 
     public static PropertiesPackage propertiesPackage;
     public static Integer clientCount;
+    public static Map<String, PropertiesPackage> clientsMap;
 }

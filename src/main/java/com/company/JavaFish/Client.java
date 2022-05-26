@@ -1,27 +1,37 @@
 package com.company.JavaFish;
 
-import com.company.JavaFish.MainWindow.Habitat;
-
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Client extends Thread {
+    public Client(String _login, String _ip, int _port) throws IOException {
+        instance = this;
+        login = _login;
+        ip = _ip;
+        port = _port;
+    }
+
     public void run() {
-        try (Socket socket = new Socket("localhost", 3345)) {
+        try (Socket socket = new Socket(ip, port)) {
             oos = new ObjectOutputStream(socket.getOutputStream());
             oos.reset();
             ois = new ObjectInputStream(socket.getInputStream());
+
             System.out.println("Client connected to socket. ");
-            Habitat.getInstance().clientCount = Integer.parseInt(ois.readUTF());
+            oos.writeUTF(login);
+            oos.reset();
+            System.out.println("Closed? " + socket.isClosed());
+//            clientCount = Integer.parseInt(ois.readUTF());
+            System.out.println("Closed? " + socket.isClosed());
+            readyFlag = true;
             while (!socket.isClosed() && !closeFlag) {
-                Thread.sleep(100);
+                Thread.sleep(100); //todo timerTask
             }
-            if (!socket.isClosed()) socket.close();
+            System.out.println("Client disconnected " + closeFlag);
             ois.close();
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
         closeFlag = true;
     }
@@ -35,9 +45,10 @@ public class Client extends Thread {
         }
     }
 
-    public void getProperties(PropertiesPackage propertiesPackage) throws IOException, ClassNotFoundException, InterruptedException {
+    public void getProperties(PropertiesPackage propertiesPackage, String name) throws IOException, ClassNotFoundException {
         if (!closeFlag) {
             oos.writeUTF("get");
+            oos.writeUTF(name);
             oos.reset();
             propertiesPackage.print();
             PropertiesPackage tmp = (PropertiesPackage) ois.readObject();
@@ -56,13 +67,43 @@ public class Client extends Thread {
 
     public void getClientCount() throws IOException {
         if (!closeFlag) {
+            System.out.println("getClientCount");
             oos.writeUTF("getClientCount");
             oos.reset();
-            Habitat.getInstance().clientCount = Integer.parseInt(ois.readUTF());
+            clientCount = Integer.parseInt(ois.readUTF());
         }
     }
 
+    public void getClientList() throws IOException {
+        if (!closeFlag) {
+            System.out.println("getClientList");
+            oos.writeUTF("getClientList");
+            oos.reset();
+            clientCount = Integer.parseInt(ois.readUTF());
+            clientsList = new ArrayList<>();
+            for (int i = 0; i < clientCount; i++)
+                clientsList.add(ois.readUTF());
+        }
+    }
+
+    public static Client getInstance() {
+        Client localInstance = instance;
+        if (localInstance == null) {
+            synchronized (Client.class) {
+                localInstance = instance;
+            }
+        }
+        return localInstance;
+    }
+
+    public boolean readyFlag = false;
+    private final String login;
+    private final String ip;
+    private final int port;
+    private static volatile Client instance;
     private boolean closeFlag = false;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
+    public ArrayList<String> clientsList;
+    public int clientCount;
 }

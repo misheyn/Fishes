@@ -7,6 +7,7 @@ import com.company.JavaFish.Models.GoldenFish;
 import com.company.JavaFish.Models.GuppyFish;
 import com.company.JavaFish.ResultWindow.ResultWindow;
 import com.company.JavaFish.StartWindow.StartMenu;
+import com.company.JavaFish.StartWindow.StartMenuController;
 import com.company.JavaFish.ThreadsAI.GoldenAI;
 import com.company.JavaFish.ThreadsAI.GuppyAI;
 import javafx.application.Application;
@@ -131,8 +132,13 @@ public class Habitat extends Application {
             showTimeLabel();
             clearDeadFish(currentTime);
         }
-        client.getClientCount();
-        mainController.printClientCountLabel(clientCount);
+        if (StartMenuController.connectionFlag) {
+            Client.getInstance().getClientCount();
+            mainController.printClientCountLabel(Client.getInstance().clientCount);
+        } else {
+            mainController.hideClientCountLabel();
+        }
+
     }
 
     private void clearDeadFish(long currentTime) {
@@ -232,16 +238,15 @@ public class Habitat extends Application {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        client.quit();
+        if (Client.getInstance() != null) Client.getInstance().quit();
         Habitat.getInstance().goldenThread.moveTimer.cancel();
         Habitat.getInstance().guppyThread.moveTimer.cancel();
     }
 
     private void initialize() throws IOException {
-        client = new Client();
-        client.start();
         StartMenu.showMenu();
-        mainController.printClientCountLabel(clientCount);
+        if (StartMenuController.connectionFlag) mainController.printClientCountLabel(Client.getInstance().clientCount);
+        else mainController.hideClientCountLabel();
         timer = new Timer();
         startTime = System.currentTimeMillis();
         goldenThread.start();
@@ -298,6 +303,4 @@ public class Habitat extends Application {
     public int height;
     public static boolean waitGolden = false;
     public static boolean waitGuppy = false;
-    public static Client client;
-    public int clientCount = 1;
 }

@@ -19,6 +19,7 @@ public class StartMenu {
         Scene root = new Scene(fxmlLoader.load());
         window.setScene(root);
         window.setTitle("Start Menu");
+        StartMenuController.connectionFlag = false;
         window.showAndWait();
     }
 

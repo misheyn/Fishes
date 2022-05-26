@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import com.company.JavaFish.Client;
 import com.company.JavaFish.Models.GoldenFish;
 import com.company.JavaFish.Models.GuppyFish;
 import com.company.JavaFish.MainWindow.Habitat;
@@ -45,7 +48,7 @@ public class StartMenuController {
     private TextField loginTextField;
 
     @FXML
-    void exitMenuButtonClick(ActionEvent event) {
+    void exitMenuButtonClick(ActionEvent event) throws IOException {
         int flag = 1;
         try {
             Habitat.P1 = Integer.parseInt(goldenFishComboBox.getValue());
@@ -91,32 +94,14 @@ public class StartMenuController {
             GuppyFish.lifeTime = 20;
         }
         if (flag == 1) {
+            if (Client.getInstance() != null && !connectionFlag) Client.getInstance().quit();
             startMenu.setVisible(false);
             startMenu.setDisable(true);
             StartMenu.getInstance().getStage().close();
         }
     }
 
-    @FXML
-    void getPropertiesButtonAction(ActionEvent event) throws IOException, ClassNotFoundException, InterruptedException {
-        Habitat.getInstance().client.getProperties(propertiesPackage);
-        Habitat.N1 = propertiesPackage.N1;
-        Habitat.N2 = propertiesPackage.N2;
-        Habitat.P1 = propertiesPackage.P1;
-        Habitat.P2 = propertiesPackage.P2;
-        GoldenFish.lifeTime = propertiesPackage.goldenLifeTime;
-        GuppyFish.lifeTime = propertiesPackage.guppyLifeTime;
-        //todo set data for view
-        goldenFishComboBox.getSelectionModel().select(Habitat.P1 / 10 - 1);
-        guppyFishComboBox.getSelectionModel().select(Habitat.P2 / 10 - 1);
-        goldenFishTextField.setText(Integer.toString(Habitat.N1));
-        guppyFishTextField.setText(Integer.toString(Habitat.N2));
-        lifetimeGoldTextField.setText(Long.toString(GoldenFish.lifeTime));
-        lifetimeGuppyTextField.setText(Long.toString(GuppyFish.lifeTime));
-    }
-
-    @FXML
-    void setPropertiesButtonAction(ActionEvent event) throws IOException {
+    void sendProperties() throws IOException {
         int p1, p2, n1, n2;
         long lifeTime1, lifeTime2;
         try {
@@ -159,7 +144,69 @@ public class StartMenuController {
             lifeTime2 = 20;
         }
         propertiesPackage.getProperties(n1, n2, p1, p2, lifeTime1, lifeTime2);
-        Habitat.getInstance().client.sendProperties(propertiesPackage);
+        Client.getInstance().sendProperties(propertiesPackage);
+    }
+
+    @FXML
+    void getPropertiesButtonAction(ActionEvent event) throws IOException, ClassNotFoundException, InterruptedException {
+        Client.getInstance().getProperties(propertiesPackage, clientComboBox.getValue());
+        Habitat.N1 = propertiesPackage.N1;
+        Habitat.N2 = propertiesPackage.N2;
+        Habitat.P1 = propertiesPackage.P1;
+        Habitat.P2 = propertiesPackage.P2;
+        GoldenFish.lifeTime = propertiesPackage.goldenLifeTime;
+        GuppyFish.lifeTime = propertiesPackage.guppyLifeTime;
+        //todo set data for view
+        goldenFishComboBox.getSelectionModel().select(Habitat.P1 / 10 - 1);
+        guppyFishComboBox.getSelectionModel().select(Habitat.P2 / 10 - 1);
+        goldenFishTextField.setText(Integer.toString(Habitat.N1));
+        guppyFishTextField.setText(Integer.toString(Habitat.N2));
+        lifetimeGoldTextField.setText(Long.toString(GoldenFish.lifeTime));
+        lifetimeGuppyTextField.setText(Long.toString(GuppyFish.lifeTime));
+    }
+
+    @FXML
+    void connectButtonClick(ActionEvent event) {
+        String host;
+        int port;
+        if (IPTextField.getText().equals("localhost")) {
+            host = IPTextField.getText();
+            port = 3345;
+        } else {
+            Pattern p = Pattern.compile("^\\s*(.*?):(\\d+)\\s*$");
+            Matcher m = p.matcher(IPTextField.getText());
+            host = m.group(1);
+            port = Integer.parseInt(m.group(2));
+            if (m.matches() && !loginTextField.getText().equals("")) {
+                //todo alert
+            }
+        }
+        try {
+            Client client = new Client(loginTextField.getText(), host, port);
+            client.start();
+            getPropertiesButton.setDisable(false);
+            clientComboBox.setDisable(false);
+            while (!Client.getInstance().readyFlag) {
+                System.out.println("A");
+            }
+            sendProperties();
+            System.out.println("Update clientList");
+            updateClientComboBox();
+            connectionFlag = true;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+            //todo alert
+        }
+
+
+    }
+
+    public void updateClientComboBox() throws IOException {
+        Client.getInstance().getClientList();
+        clientComboBox.valueProperty().set(null);
+        for (int i = 0; i < Client.getInstance().clientCount; i++) {
+            clientComboBox.getItems().add(Client.getInstance().clientsList.get(i));
+        }
     }
 
     @FXML
@@ -178,9 +225,11 @@ public class StartMenuController {
         startMenu.setGraphic(null);
         lifetimeGoldTextField.setText("10");
         lifetimeGuppyTextField.setText("20");
+        //todo default host
         getPropertiesButton.setDisable(true);
         clientComboBox.setDisable(true);
     }
 
+    public static boolean connectionFlag = false;
     private PropertiesPackage propertiesPackage;
 }

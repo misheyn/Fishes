@@ -19,10 +19,6 @@ public class MonoThreadClientHandler extends Thread {
             ObjectInputStream ois = new ObjectInputStream(clientDialog.getInputStream());
             ObjectOutputStream oos = new ObjectOutputStream(clientDialog.getOutputStream());
             oos.reset();
-//            synchronized (MultiThreadServer.clientCount) {
-//                oos.writeUTF(Integer.toString(MultiThreadServer.clientCount));
-//                oos.reset();
-//            }
             String clientName = ois.readUTF();
             System.out.println("Connected " + clientName);
             label:

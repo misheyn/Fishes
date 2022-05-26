@@ -156,7 +156,6 @@ public class StartMenuController {
         Habitat.P2 = propertiesPackage.P2;
         GoldenFish.lifeTime = propertiesPackage.goldenLifeTime;
         GuppyFish.lifeTime = propertiesPackage.guppyLifeTime;
-        //todo set data for view
         goldenFishComboBox.getSelectionModel().select(Habitat.P1 / 10 - 1);
         guppyFishComboBox.getSelectionModel().select(Habitat.P2 / 10 - 1);
         goldenFishTextField.setText(Integer.toString(Habitat.N1));
@@ -166,36 +165,57 @@ public class StartMenuController {
     }
 
     @FXML
-    void connectButtonClick(ActionEvent event) {
-        String host;
-        int port;
-        if (IPTextField.getText().equals("localhost")) {
-            host = IPTextField.getText();
-            port = 3345;
-        } else {
-            Pattern p = Pattern.compile("^\\s*(.*?):(\\d+)\\s*$");
-            Matcher m = p.matcher(IPTextField.getText());
-            host = m.group(1);
-            port = Integer.parseInt(m.group(2));
-            if (m.matches() && !loginTextField.getText().equals("")) {
-                //todo alert
+    void connectButtonClick(ActionEvent event) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Wrong input!\nThink about it ☺", ButtonType.YES);
+        if (Client.getInstance() == null || !Client.getInstance().readyFlag) {
+            String host;
+            int port;
+            if (IPTextField.getText().equals("localhost")) {
+                host = IPTextField.getText();
+                port = 3345;
+            } else {
+                Pattern p = Pattern.compile("^\\s*(.*?):(\\d+)\\s*$");
+                Matcher m = p.matcher(IPTextField.getText());
+                if (m.matches() && !loginTextField.getText().isEmpty()) {
+                    host = m.group(1);
+                    port = Integer.parseInt(m.group(2));
+                }else{
+                    IPTextField.setText("localhost");
+                    loginTextField.setText("");
+                    alert.showAndWait();
+                    return;
+                }
             }
-        }
-        try {
-            Client client = new Client(loginTextField.getText(), host, port);
-            client.start();
-            getPropertiesButton.setDisable(false);
-            clientComboBox.setDisable(false);
-            while (!Client.getInstance().readyFlag) {
-                System.out.println("A");
+            try {
+                Client client = new Client(loginTextField.getText(), host, port);
+                client.start();
+//                while (!Client.getInstance().readyFlag) {
+                    Thread.sleep(100);
+//                }
+                if(Client.getInstance().closeFlag){
+                    IPTextField.setText("localhost");
+                    loginTextField.setText("");
+                    alert.showAndWait();
+                    return;
+                }
+                getPropertiesButton.setDisable(false);
+                clientComboBox.setDisable(false);
+
+                sendProperties();
+                System.out.println("Update clientList");
+                updateClientComboBox();
+                connectionFlag = true;
+            } catch (IOException e) {
+                IPTextField.setText("localhost");
+                loginTextField.setText("");
+                alert.showAndWait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-            sendProperties();
+        } else if (Client.getInstance().readyFlag) {
             System.out.println("Update clientList");
             updateClientComboBox();
-            connectionFlag = true;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-            //todo alert
+            sendProperties();
         }
 
 
@@ -203,10 +223,11 @@ public class StartMenuController {
 
     public void updateClientComboBox() throws IOException {
         Client.getInstance().getClientList();
-        clientComboBox.valueProperty().set(null);
+        clientComboBox.getItems().clear();
         for (int i = 0; i < Client.getInstance().clientCount; i++) {
             clientComboBox.getItems().add(Client.getInstance().clientsList.get(i));
         }
+        if (clientComboBox.getItems() != null) clientComboBox.getSelectionModel().select(0);
     }
 
     @FXML
@@ -225,7 +246,7 @@ public class StartMenuController {
         startMenu.setGraphic(null);
         lifetimeGoldTextField.setText("10");
         lifetimeGuppyTextField.setText("20");
-        //todo default host
+        IPTextField.setText("localhost");
         getPropertiesButton.setDisable(true);
         clientComboBox.setDisable(true);
     }

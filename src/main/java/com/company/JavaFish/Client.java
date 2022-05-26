@@ -1,6 +1,7 @@
 package com.company.JavaFish;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -17,19 +18,21 @@ public class Client extends Thread {
             oos = new ObjectOutputStream(socket.getOutputStream());
             oos.reset();
             ois = new ObjectInputStream(socket.getInputStream());
-
-            System.out.println("Client connected to socket. ");
-            oos.writeUTF(login);
-            oos.reset();
-            System.out.println("Closed? " + socket.isClosed());
-//            clientCount = Integer.parseInt(ois.readUTF());
-            System.out.println("Closed? " + socket.isClosed());
-            readyFlag = true;
-            while (!socket.isClosed() && !closeFlag) {
-                Thread.sleep(100); //todo timerTask
+            if (oos != null) {
+                System.out.println("Client connected to socket. ");
+                oos.writeUTF(login);
+                oos.reset();
+                readyFlag = true;
+                while (!socket.isClosed() && !closeFlag) {
+                    Thread.sleep(100); //todo timerTask
+                }
+                System.out.println("Client disconnected " + closeFlag);
+                ois.close();
+            } else {
+                closeFlag = true;
             }
-            System.out.println("Client disconnected " + closeFlag);
-            ois.close();
+        } catch (ConnectException e){
+            closeFlag = true;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -61,6 +64,7 @@ public class Client extends Thread {
             oos.writeUTF("quit");
             oos.close();
             closeFlag = true;
+            readyFlag = false;
             System.out.println("Closing connections & channels on clentSide - DONE.");
         }
     }
@@ -101,7 +105,7 @@ public class Client extends Thread {
     private final String ip;
     private final int port;
     private static volatile Client instance;
-    private boolean closeFlag = false;
+    public boolean closeFlag = false;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     public ArrayList<String> clientsList;
